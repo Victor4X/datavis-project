@@ -1,12 +1,17 @@
-# datavis-project
+# Group 16 Data Visualization Project
 
-Group 16 data visualization project
+## Running the project
 
-## Project Ideas
+The main Jupiter notebook is `visualization/launches.ipynb`. It can be run with the following command:
 
-- Heatmap / Density Map of Launches by organization/country
-- Animated timeline of launches
-- Show proportional changes of government vs. private launches over time
-- Show the number of launches per year for each country
-- Show the number of launches per year for each organization
-- Show Histogram of Mission Types
+```bash
+jupyter notebook visualization/launches.ipynb
+```
+
+Or opened with google colab here:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Victor4X/datavis-project/blob/main/visualization/launches.ipynb)
+
+## Introduction
+
+This visualization project aims to visualize the data from the [Launch Library 2 API](https://thespacedevs.com/llapi). The data is about rocket launches and their payloads. The data is available in the `visualization/dataset` folder.
