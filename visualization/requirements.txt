@@ -1,0 +1,8 @@
+pandas
+geopandas
+numpy
+plotly
+matplotlib
+seaborn
+dash 
+jupyter-dash
