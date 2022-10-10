@@ -1,15 +1,15 @@
---2022-09-26 15:11:29--  https://raw.githubusercontent.com/plotly/dash-sample-apps/main/apps/dash-drug-discovery/data/small_molecule_drugbank.csv
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
+--2022-10-03 14:58:12--  https://raw.githubusercontent.com/plotly/dash-sample-apps/main/apps/dash-drug-discovery/data/small_molecule_drugbank.csv
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 239436 (234K) [text/plain]
-Saving to: ‘small_molecule_drugbank.csv’
+Saving to: ‘small_molecule_drugbank.csv.1’
 
-     0K .......... .......... .......... .......... .......... 21% 2.46M 0s
-    50K .......... .......... .......... .......... .......... 42% 2.95M 0s
-   100K .......... .......... .......... .......... .......... 64% 4.74M 0s
-   150K .......... .......... .......... .......... .......... 85% 5.20M 0s
-   200K .......... .......... .......... ...                  100% 9.05M=0.06s
+     0K .......... .......... .......... .......... .......... 21% 2.02M 0s
+    50K .......... .......... .......... .......... .......... 42% 3.61M 0s
+   100K .......... .......... .......... .......... .......... 64% 7.95M 0s
+   150K .......... .......... .......... .......... .......... 85% 8.13M 0s
+   200K .......... .......... .......... ...                  100% 4.07M=0.06s
 
-2022-09-26 15:11:29 (3.83 MB/s) - ‘small_molecule_drugbank.csv’ saved [239436/239436]
+2022-10-03 14:58:12 (3.94 MB/s) - ‘small_molecule_drugbank.csv.1’ saved [239436/239436]
 
