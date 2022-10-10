@@ -25,3 +25,19 @@ jupyter notebook visualization/launches.ipynb
 Or opened with google colab here:
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Victor4X/datavis-project/blob/main/visualization/launches.ipynb)
+
+# Visualizations
+
+## 01. Global pad lanches from 1951-2021
+World map animation over time containing locations of pad launches.
+When hovering a pad launch point, info should be shown in a popover box.
+Launches should be indicated by a circular "pulse" effect with a given opacity when added to the map, to make the change more visible.
+Full screen map.
+
+## 02. Linegraph of launches vs. geopolitical situation
+
+
+## 03. Launches pr. country as stacked barchart over time
+
+
+## 04. Launch provider type per country per year
