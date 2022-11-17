@@ -53,3 +53,10 @@ Full screen map.
 
 
 ## 04. Launch provider type per country per year
+
+# Misc
+
+Cleaning the notebook outputs:
+```bash
+jupyter nbconvert --clear-output --inplace launches.ipynb
+```
