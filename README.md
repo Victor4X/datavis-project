@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project aims to visualize the data from the [Launch Library 2 API](https://thespacedevs.com/llapi). The data is about rocket launches and their payloads. The data is available in the `visualization/dataset` folder.
+This project aims to visualize the data from the [Launch Library 2 API](https://thespacedevs.com/llapi). The data is about rocket launches and their payloads. The data is available in the `Visualization/Dataset/data` folder.
 
 ## Dataset
 
@@ -16,15 +16,27 @@ The data is `JSON` formatted and each record is a launch containing a lot of met
 
 ## Running the project
 
-The main Jupiter notebook is `visualization/launches.ipynb`. It can be run with the following command:
+The main Jupiter notebook is `launches.ipynb`. It can be run with the following command:
 
 ```bash
-jupyter notebook visualization/launches.ipynb
+jupyter notebook launches.ipynb
 ```
 
 Or opened with google colab here:
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Victor4X/datavis-project/blob/main/visualization/launches.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Victor4X/datavis-project/blob/main/launches.ipynb)
+
+The project also comes with a web dashboard that can be run with the following command:
+
+```bash
+python serve.py
+```
+
+But that requires the `requirements.txt` to be installed first.
+
+```bash
+pip install -r requirements.txt
+```
 
 # Visualizations
 
