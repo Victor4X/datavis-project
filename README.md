@@ -1,5 +1,9 @@
 # Group 16 Data Visualization Project
 
+## Dashboard
+
+The dashboard is available at: (TODO)
+
 ## Introduction
 
 This project aims to visualize the data from the [Launch Library 2 API](https://thespacedevs.com/llapi). The data is about rocket launches and their payloads. The data is available in the `Visualization/Dataset/data` folder.
@@ -14,7 +18,9 @@ The data is `JSON` formatted and each record is a launch containing a lot of met
 
 ---
 
-## Running the project
+## Running the project locally / in Google Colab
+
+### Notebook / Colab
 
 The main Jupiter notebook is `launches.ipynb`. It can be run with the following command:
 
@@ -26,17 +32,29 @@ Or opened with google colab here:
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Victor4X/datavis-project/blob/main/launches.ipynb)
 
-The project also comes with a web dashboard that can be run with the following command:
+### Web Dashboard
+The project also comes with a web dashboard.
+
+But serving it requires the `requirements.txt` to be installed:
+
+```bash
+pip install -r requirements.txt
+```
+
+Then the dashboard can be served with the following commands:
+
+Debug:
 
 ```bash
 python serve.py
 ```
 
-But that requires the `requirements.txt` to be installed first.
+Production:
 
 ```bash
-pip install -r requirements.txt
+gunicorn Visualizations.Dashboard.app:server
 ```
+
 
 # Visualizations
 
