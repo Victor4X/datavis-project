@@ -1,3 +1,3 @@
-from Visualizations import Dashboard
+from Visualizations.Dashboard.app import serve
 
-Dashboard.serve()
+serve()

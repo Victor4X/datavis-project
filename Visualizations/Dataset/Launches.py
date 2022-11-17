@@ -55,10 +55,11 @@ def gen_dataframe():
         # Convert all timestamps to datetime objects
         from dateutil import parser
 
+        output_df['net'] = output_df['net'].apply(lambda timestamp: parser.parse(timestamp))
         output_df['window_start'] = output_df['window_start'].apply(lambda timestamp: parser.parse(timestamp))
         output_df['window_end'] = output_df['window_end'].apply(lambda timestamp: parser.parse(timestamp))
 
-        output_df['year'] = output_df.apply(lambda row: row['window_end'].year, axis=1)
+        output_df['year'] = output_df.apply(lambda row: row['net'].year, axis=1)
 
         return output_df
 
