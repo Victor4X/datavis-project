@@ -1,8 +1,8 @@
 import pandas as pd
 import json
 
-def get_dataframe():
-    print("Generating dataframe")
+def gen_dataframe():
+    print("Generating Launches dataframe")
     from ..Dataset import get_data
     with get_data("Launches.json") as f:
         data = json.load(f)
@@ -11,7 +11,7 @@ def get_dataframe():
         # Normalizing as much as possible
         output_df = pd.json_normalize(data, max_level=5)
         output_df.drop(['updates', 'vidURLs', 'program', 'mission_patches', 'infoURLs', 'rocket.configuration.program', 'rocket.launcher_stage', 'rocket.spacecraft_stage.launch_crew',
-                       'rocket.spacecraft_stage.onboard_crew', 'rocket.spacecraft_stage.landing_crew', 'rocket.spacecraft_stage.docking_events'], axis=1, inplace=True)
+                    'rocket.spacecraft_stage.onboard_crew', 'rocket.spacecraft_stage.landing_crew', 'rocket.spacecraft_stage.docking_events'], axis=1, inplace=True)
         
         updates_df = pd.json_normalize(data, record_path=['updates'], meta=['id'], meta_prefix='launch.')
         
@@ -52,6 +52,14 @@ def get_dataframe():
         output_df.merge(rocket_config_program_mission_patches_df, left_on='id', right_on='launch.id', how='outer')
         output_df.merge(rocket_launcher_stage_df, left_on='id', right_on='launch.id', how='outer')
 
+        # Convert all timestamps to datetime objects
+        from dateutil import parser
+
+        output_df['window_start'] = output_df['window_start'].apply(lambda timestamp: parser.parse(timestamp))
+        output_df['window_end'] = output_df['window_end'].apply(lambda timestamp: parser.parse(timestamp))
+
+        output_df['year'] = output_df.apply(lambda row: row['window_end'].year, axis=1)
+
         return output_df
 
-launch_df = get_dataframe()
+launch_df = gen_dataframe()
