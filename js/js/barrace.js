@@ -1,5 +1,7 @@
 import launches from "../data/Launches-small.json" assert { type: "json" };
-import { settings, callbacks, addSetting } from "../js/common.js";
+import { Animation } from "./animation.js";
+import { settings, callbacks, addSetting } from "./common.js";
+import { COLORS_ARRAY } from "./constants.js";
 
 // Settings callback test callback
 callbacks.push(() => {
@@ -49,30 +51,16 @@ function calcTotalLaunches(data) {
 // Initialize the echarts instance based on the prepared dom
 var myChart = echarts.init(document.getElementById("barrace"));
 
-const colors = [
-  '#dd6b66',
-  '#759aa0',
-  '#e69d87',
-  '#8dc1a9',
-  '#ea7e53',
-  '#eedd78',
-  '#73a373',
-  '#73b9bc',
-  '#7289ab',
-  '#91ca8c',
-  '#f49f42'
-]
-
 // Specify the configuration items and data for the chart
 var option = {
     title: {
         text: "Launches pr country",
     },
     tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      }
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
     },
     legend: {
         data: ["launches"],
@@ -133,20 +121,14 @@ var option = {
 };
 
 let y = 1;
-function repeatOften(timestamp, startDate) {
+function repeatOften() {
     // Do whatever
-    if (timestamp - startDate >= settings.updateDelay.value) {
-        startDate = timestamp;
-        if (checkbox.checked) {
-            updateYear(years[y]);
-            yearSlider.value = y;
-            y++;
-            y %= years.length;
-        }
+    if (checkbox.checked) {
+        updateYear(years[y]);
+        yearSlider.value = y;
+        y++;
+        y %= years.length;
     }
-    window.requestAnimationFrame((timestamp) =>
-        repeatOften(timestamp, startDate)
-    );
 }
 
 function updateYear(year) {
@@ -154,12 +136,14 @@ function updateYear(year) {
         return d.year <= year;
     });
     const launches = calcTotalLaunches(source);
-    option.series[0].data = Object.values(launches).map((launch, i) => { return {
-      value: launch,
-      itemStyle: {
-        color: colors[i]
-      }
-    }});
+    option.series[0].data = Object.values(launches).map((launch, i) => {
+        return {
+            value: launch,
+            itemStyle: {
+                color: COLORS_ARRAY[i]
+            }
+        }
+    });
     // option.yAxis.data = Object.keys(launches).map(name => name.substring(0, 3)),
     option.graphic.elements[0].style.text = year;
     myChart.setOption(option);
@@ -171,9 +155,16 @@ const checkbox = document.body.querySelector("#animationCheckbox");
 // Display the chart using the configuration items and data just specified.
 myChart.setOption(option);
 updateYear(years[0]);
-window.requestAnimationFrame((timestamp) => repeatOften(timestamp, performance.now()));
-window.addEventListener("resize", myChart.resize);
 
+const animation = new Animation(() => settings.updateDelay.value, repeatOften);
+animation.start()
+
+settings.animationSpeed.htmlElement.addEventListener("change", () => {
+    option.animationDurationUpdate = settings.animationSpeed.value;
+    myChart.setOption(option)
+})
+
+window.addEventListener("resize", myChart.resize);
 
 const yearSlider = document.querySelector("#year_slider");
 yearSlider.min = 0;
