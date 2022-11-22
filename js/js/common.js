@@ -8,6 +8,7 @@ const addSetting = (key, setting) => {
 
     const div = document.createElement("div");
     div.classList.add("setting");
+    setting.htmlElement = div;
     const label = document.createElement("label");
     label.innerText = setting.label;
     div.appendChild(label);
