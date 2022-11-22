@@ -1,14 +1,22 @@
 import launches from "../data/Launches-small.json" assert { type: "json" };
 import { settings, callbacks, addSetting } from "../js/common.js";
 
-// Test callback
+// Settings callback test callback
 callbacks.push(() => {
     console.log(`test ${settings.test.value}`);
 });
 
-// Add update frequency setting
-addSetting("updateFrequency", {
-    label: "Update frequency",
+// Add update delay setting
+addSetting("updateDelay", {
+    label: "Update Delay",
+    value: 3000,
+    type: "number",
+    attrs: { min: 0, max: 10000 },
+});
+
+// Add animation speed setting
+addSetting("animationSpeed", {
+    label: "Animation Speed",
     value: 2000,
     type: "number",
     attrs: { min: 0, max: 10000 },
@@ -104,7 +112,7 @@ var option = {
     ],
     // Disable init animation.
     animationDuration: 500,
-    animationDurationUpdate: settings.updateFrequency.value,
+    animationDurationUpdate: settings.animationSpeed.value,
     animationEasing: "cubicInOut",
     animationEasingUpdate: "cubicInOut",
     graphic: {
@@ -127,12 +135,13 @@ var option = {
 let y = 1;
 function repeatOften(timestamp, startDate) {
     // Do whatever
-    if (timestamp - startDate >= settings.updateFrequency.value) {
+    if (timestamp - startDate >= settings.updateDelay.value) {
         startDate = timestamp;
         if (checkbox.checked) {
             updateYear(years[y]);
             yearSlider.value = y;
-            y = y == years.length-1 ? 0 : y + 1;
+            y++;
+            y %= years.length;
         }
     }
     window.requestAnimationFrame((timestamp) =>
