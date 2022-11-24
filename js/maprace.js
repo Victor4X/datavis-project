@@ -70,9 +70,10 @@ echarts.registerMap('world', worldJson, {
     width: 2
   }
 });
+
 option = {
   title: {
-    text: 'Global Lanches Over Time',
+    text: 'Global Launches Over Time',
     left: 'right'
   },
   tooltip: {
@@ -124,15 +125,15 @@ option = {
           show: true
         }
       },
-      data:  Object.keys(calcTotalLaunches(launches_modified)).map((name) =>
+      data: Object.keys(calcTotalLaunches(launches_modified)).map((name) =>
         name.substring(0, 3)
-      ), 
+      ),
     }
   ],
-     animationDuration: 500,
-      animationDurationUpdate: 2000,
-      animationEasing: "cubicInOut",
-      animationEasingUpdate: "cubicInOut", 
+  animationDuration: 500,
+  animationDurationUpdate: 2000,
+  animationEasing: "cubicInOut",
+  animationEasingUpdate: "cubicInOut",
   graphic: {
     elements: [
       {
@@ -168,13 +169,13 @@ function updateYear(year) {
 
 let y = 1;
 function repeatOften() {
-    // Do whatever
-    //if (checkbox.checked) {
-        updateYear(years[y]);
-        //yearSlider.value = y;
-        y++;
-        y %= years.length;
-    //}
+  // Do whatever
+  //if (checkbox.checked) {
+  updateYear(years[y]);
+  //yearSlider.value = y;
+  y++;
+  y %= years.length;
+  //}
 }
 
 const animation = new Animation(() => 2000, repeatOften);
@@ -183,3 +184,5 @@ animation.start()
 updateYear(years[0]);
 
 myChart.setOption(option);
+
+window.addEventListener("resize", myChart.resize);
