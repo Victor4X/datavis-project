@@ -1,4 +1,4 @@
-import launches from "../data/Launches-small.json" assert { type: "json" };
+import launches from "../data/Launches.json" assert { type: "json" };
 import { Animation } from "./animation.js";
 import { settings, callbacks, addSetting } from "./common.js";
 import { COLORS_ARRAY } from "./constants.js";
@@ -11,7 +11,7 @@ callbacks.push(() => {
 // Add update delay setting
 addSetting("updateDelay", {
     label: "Update Delay",
-    value: 3000,
+    value: 2000,
     type: "number",
     attrs: { min: 0, max: 10000 },
 });
@@ -19,7 +19,7 @@ addSetting("updateDelay", {
 // Add animation speed setting
 addSetting("animationSpeed", {
     label: "Animation Speed",
-    value: 2000,
+    value: 1000,
     type: "number",
     attrs: { min: 0, max: 10000 },
 });
@@ -42,7 +42,6 @@ function calcTotalLaunches(data) {
             ? launches_per_country[country] + 1
             : 1;
     });
-
     return launches_per_country;
 }
 

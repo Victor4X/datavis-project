@@ -1,3 +1,42 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .setting>label{
     margin-right: 10px;
+}
+
+.rocket-history {
+    text-align: center;
+}
+
+.country, .rocket {
+    box-shadow: 0 0 .5rem .5rem rgba(0, 0, 0, 0.25);
+    padding: 2rem;
+}
+
+.country, .rocket, .rocket-info-box>img  {
+    border-radius: 50px;
+}
+
+.country, .rocket {
+    margin: 2rem;
+}
+
+.rockets {
+    display: flex;
+    justify-content: center;
+}
+
+.rocket {
+    max-width: fit-content;
+}
+
+.rocket-info-box {
+    display: flex;
+    justify-content: center;
+}
+
+.rocket-info-box > img {
+    max-width: 15rem;
 }
