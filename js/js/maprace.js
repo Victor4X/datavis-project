@@ -22,7 +22,7 @@ const countryMapCodes = {
   "EUR": "Germany", // dont know what to do here
   "ISR": "Israel",
   "IRN": "Iran",
-  "TWN": "China", // the map does not recignize taiwan :/
+  "TWN": "China", // the map does not recognize taiwan :/
   "BRA": "Brazil",
   "KOR": "Korea",
   "AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR": "Germany", // dont know what to do here
@@ -129,10 +129,10 @@ option = {
       ), 
     }
   ],
-  /*   animationDuration: 500,
+     animationDuration: 500,
       animationDurationUpdate: 2000,
       animationEasing: "cubicInOut",
-      animationEasingUpdate: "cubicInOut", */
+      animationEasingUpdate: "cubicInOut", 
   graphic: {
     elements: [
       {
