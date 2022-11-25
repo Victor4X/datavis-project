@@ -117,7 +117,6 @@ echarts.util.each(countries, function (country) {
             data: [{ xAxis: 34 }],
             animationDuration: 500,
             animationDelay: lineRaceTime / (years.length / 34),
-            animationDelay: 1000,
             lineStyle: {
                 width: 2
             }
