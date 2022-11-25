@@ -17,11 +17,13 @@ function calcTotalLaunches(data) {
     return launches_per_country;
 }
 
+const years = Object.keys(launches).sort();
+
 // Setup dataset as 2d array
 const headers = [
     "Launches",
     "Country",
-    "Year"
+    "Year",
 ];
 
 const launches_array = [headers];
@@ -34,6 +36,8 @@ Object.keys(launches).forEach(year => {
     });
 });
 
+
+const lineRaceTime = 30000;
 
 const chartDom = document.getElementById('line-race-container');
 const myChart = echarts.init(chartDom);
@@ -95,11 +99,33 @@ echarts.util.each(countries, function (country) {
             label: ['Country', 'Launches'],
             itemName: 'Year',
             tooltip: ['Launches']
+        },
+        markLine: {
+            symbol: ['none', 'pin'],
+            symbolSize: 40,
+            emphasis: {
+                label: {
+                    formatter: () => "Fall of the Soviet Union"
+                },
+                lineStyle: {
+                    width: 2
+                }
+            },
+            label: {
+                formatter: () => ""
+            },
+            data: [{ xAxis: 34 }],
+            animationDuration: 500,
+            animationDelay: lineRaceTime / (years.length / 34),
+            animationDelay: 1000,
+            lineStyle: {
+                width: 2
+            }
         }
     });
 });
 option = {
-    animationDuration: 30000,
+    animationDuration: lineRaceTime,
     dataset: [
         {
             id: 'dataset_raw',
@@ -124,7 +150,28 @@ option = {
     grid: {
         right: 140,
     },
-    series: seriesList
+    series: seriesList,
+    graphic: {
+        type: 'text',
+        style: {
+            text: 'This text',
+            x: "100%",
+            y: 100,
+        },
+        enterAnimation: {
+            duration: 1000,
+            delay: lineRaceTime / (years.length / 33),
+            delay: 10,
+        },
+        enterFrom: {
+            // Fade in
+            style: { opacity: 0 },
+            // Slide in from left
+            x: 0
+        },
+        
+    }
 };
+
 
 myChart.setOption(option);
