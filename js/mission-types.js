@@ -163,7 +163,7 @@ const option = {
         show: true,
         formatter: (params) => {
           console.log(params.value)
-          return params.value[2] > 0 ? params.value[2] : '< 0'
+          return params.value[2] > 0 ? params.value[2] : '< 0.01'
         }
       },
       emphasis: {
