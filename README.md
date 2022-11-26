@@ -34,6 +34,8 @@ Full screen map.
 
 ## 04. Launch provider type per country per year
 
+## 05. Total mission types vs. orbits
+
 # Misc
 
 Cleaning the notebook outputs:
