@@ -1,4 +1,10 @@
 import launches from '../data/Launches.json' assert {type: 'json'};
+import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
+
+echarts.registerTheme('dark-theme', darkTheme)
+
+const chartDom = document.getElementById('mission-types-container');
+const myChart = echarts.init(chartDom, 'dark-theme');
 
 const orbits = new Set();
 
@@ -50,8 +56,6 @@ function calcMissionTypes(data) {
   return mission_types;
 }
 
-const chartDom = document.getElementById('mission-types-container');
-const myChart = echarts.init(chartDom);
 
 const missions = calcMissionTypes(launches);
 
@@ -83,24 +87,34 @@ missionKeys.forEach((mission, missionIdx) => {
 
 const option = {
   tooltip: {
-    position: 'top'
+    position: 'top',
+    valueFormatter: (value) => value[2] ? Math.round(value[2] * 100) + "%" : value
+  },
+  title: {
+    text: 'Launch missions vs. mission orbits',
+    left: '40%',
+    top: '5%',
+    textStyle: {
+      fontSize: 24,
+      color: '#fff'
+    }
   },
   grid: [
     {
-      top: '33%',
-      right: '33%',
-      height: '45%',
+      top: '25%',
+      right: '25%',
+      height: '55%',
       width: '50%'
     },
     {
-      bottom: '67%',
-      right: '33%',
+      bottom: '75.5%',
+      right: '25%',
       width: '50%'
     },
     {
-      top: '33%',
-      left: '67%',
-      height: '45%',
+      top: '25%',
+      left: '75.5%',
+      height: '55%',
     }
   ],
   xAxis: [
@@ -111,16 +125,18 @@ const option = {
       splitArea: {
       },
       axisLabel: {
-        rotate: 90
+        rotate: 90,
       },
     },
     {
+      type: 'category',
       gridIndex: 1,
       data: orbitKeys,
       show: false,
     },
     {
       gridIndex: 2,
+      show: false,
     }
   ],
   yAxis: [
@@ -133,8 +149,10 @@ const option = {
     },
     {
       gridIndex: 1,
+      show: false,
     },
     {
+      type: 'category',
       gridIndex: 2,
       data: missionKeys,
       show: false,
@@ -143,13 +161,15 @@ const option = {
   visualMap: {
     min: 0,
     max: 1,
-    calculable: true,
+    precision: 2,
     orient: 'horizontal',
-    left: '33%',
-    inRange: {
-      color: ['#e0ffff', '#006edd'],
-      opacity: 1
+    left: '40%',
+    bottom: '30px',
+    seriesIndex: 0,
+    textStyle: {
+      color: '#fff'
     },
+    text: ['1.0', '0.0']
   },
   series: [
     {
@@ -158,37 +178,20 @@ const option = {
       data: data,
       xAxisIndex: 0,
       yAxisIndex: 0,
-      realtimeSort: true,
       label: {
         show: true,
         formatter: (params) => {
-          console.log(params.value)
-          return params.value[2] > 0 ? params.value[2] : '< 0.01'
-        }
+          return params.value[2] > 0 ? params.value[2] : '<0.01'
+        },
+        fontSize: 10
       },
       emphasis: {
+        focus: 'self',
         itemStyle: {
-          shadowBlur: 10,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
-      }
-    },
-    {
-      name: 'total mission types',
-      type: 'bar',
-      xAxisIndex: 2,
-      yAxisIndex: 2,
-      label: {
-        show: true,
-        position: 'right'
+          shadowBlur: 5,
+          shadowColor: 'rgba(255, 255, 255, 0.5)',
+        },
       },
-      realtimeSort: true,
-      data: missionKeys.map(mission => {
-        return {
-          name: missions[mission],
-          value: missions[mission].total
-        }
-      })
     },
     {
       name: 'total orbit types',
@@ -205,8 +208,31 @@ const option = {
           name: orbit,
           value: orbitTotals[orbit]
         }
-      })
-    }
+      }),
+    },
+    {
+      name: 'total mission types',
+      type: 'bar',
+      xAxisIndex: 2,
+      yAxisIndex: 2,
+      itemStyle: {
+        opacity: 0.2,
+      },
+      label: {
+        show: true,
+        position: 'right'
+      },
+      realtimeSort: true,
+      data: missionKeys.map(mission => {
+        return {
+          name: missions[mission],
+          value: missions[mission].total
+        }
+      }),
+      itemStyle: {
+        color: darkTheme.color[0]
+      }
+    },
   ]
 };
 
