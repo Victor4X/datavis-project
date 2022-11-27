@@ -151,26 +151,6 @@ option = {
         right: 140,
     },
     series: seriesList,
-    graphic: {
-        type: 'text',
-        style: {
-            text: 'This text',
-            x: "100%",
-            y: 100,
-        },
-        enterAnimation: {
-            duration: 1000,
-            delay: lineRaceTime / (years.length / 33),
-            delay: 10,
-        },
-        enterFrom: {
-            // Fade in
-            style: { opacity: 0 },
-            // Slide in from left
-            x: 0
-        },
-
-    }
 };
 
 
