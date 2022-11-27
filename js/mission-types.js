@@ -75,8 +75,8 @@ Object.keys(missions).sort().map(type => {
 
 const data = [];
 
-const missionKeys = Object.keys(missions).sort((a, b) => missions[a].total - missions[b].total);
-const orbitKeys = Object.keys(orbitTotals).sort((a, b) => orbitTotals[a] - orbitTotals[b]);
+const missionKeys = Object.keys(missions).sort((a, b) => missions[b].total - missions[a].total);
+const orbitKeys = Object.keys(orbitTotals).sort((a, b) => orbitTotals[b] - orbitTotals[a]);
 
 missionKeys.forEach((mission, missionIdx) => {
   orbitKeys.forEach((orbit, orbitIdx) => {
@@ -167,6 +167,17 @@ const option = {
     },
     text: ['1.0', '0.0']
   },
+  tooltip: {
+    trigger: 'item',
+    axisPointer: {
+      type: 'cross',
+      crossStyle: {
+        width: 1,
+        opacity: 0.5
+      },
+    },
+    showContent: false,
+  },
   series: [
     {
       name: 'Mission type vs orbits',
@@ -182,10 +193,9 @@ const option = {
         fontSize: 10
       },
       emphasis: {
-        focus: 'self',
         itemStyle: {
-          shadowBlur: 5,
-          shadowColor: 'rgba(255, 255, 255, 0.5)',
+          borderWidth: 2,
+          borderColor: '#aaa',
         },
       },
     },
@@ -194,7 +204,6 @@ const option = {
       type: 'bar',
       xAxisIndex: 1,
       yAxisIndex: 1,
-      realtimeSort: true,
       label: {
         show: true,
         position: 'top'
@@ -218,7 +227,6 @@ const option = {
         show: true,
         position: 'right'
       },
-      realtimeSort: true,
       data: missionKeys.map(mission => {
         return {
           name: missions[mission],
@@ -233,5 +241,3 @@ const option = {
 };
 
 myChart.setOption(option);
-
-window.addEventListener("resize", myChart.resize);

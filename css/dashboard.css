@@ -1,9 +1,10 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
+    background-color: rgba(34, 39, 54, 1);
 }
 
-.setting>label{
+.setting>label {
     margin-right: 10px;
 }
 
@@ -11,16 +12,20 @@ body {
     text-align: center;
 }
 
-.country, .rocket {
+.country,
+.rocket {
     box-shadow: 0 0 .5rem .5rem rgba(0, 0, 0, 0.25);
     padding: 2rem;
 }
 
-.country, .rocket, .rocket-info-box>img  {
+.country,
+.rocket,
+.rocket-info-box>img {
     border-radius: 50px;
 }
 
-.country, .rocket {
+.country,
+.rocket {
     margin: 2rem;
 }
 
@@ -38,6 +43,15 @@ body {
     justify-content: center;
 }
 
-.rocket-info-box > img {
+.rocket-info-box>img {
     max-width: 15rem;
+}
+
+.spacer {
+    background-color: rgba(34, 39, 54, 1);
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    height: 100px;
 }
