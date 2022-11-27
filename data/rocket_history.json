@@ -4,13 +4,13 @@
         "image": "./assets/ussr.png",
         "rockets": [
             {
-                "name": "Soyuz",
-                "image": "./assets/soyuz-fg.jpg",
-                "info": "1966 - 1975"
+                "name": "Vostok",
+                "image": "./assets/vostok.jpg",
+                "info": "1960 - 1991"
             },
             {
-                "name": "Soyuz",
-                "image": "./assets/soyuz-fg.jpg",
+                "name": "Luna",
+                "image": "./assets/luna.jpg",
                 "info": "1966 - 1975"
             },
             {

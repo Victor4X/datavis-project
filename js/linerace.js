@@ -170,5 +170,6 @@ option = {
     ],
 };
 
+window.addEventListener("resize", myChart.resize);
 
 myChart.setOption(option);

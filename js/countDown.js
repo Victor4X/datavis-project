@@ -21,7 +21,7 @@ if (!animationPlayed) {
         }
     });
     animation.start();
-    //localStorage.setItem("played","true");
+    localStorage.setItem("played","true");
 }
 
 else {
