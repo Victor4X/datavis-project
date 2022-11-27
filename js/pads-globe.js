@@ -16,21 +16,22 @@ var ROOT_PATH = 'https://echarts.apache.org/examples';
 const option = {
     backgroundColor: '#000',
     globe: {
-        baseTexture: '../assets/world.topo.bathy.200401.jpg',
+        baseTexture: '../assets/night.jpg',
         heightTexture: '/assets/world.topo.bathy.200401.jpg',
         shading: 'lambert',
         globeRadius: 40,
         globeOuterRadius: 60,
         light: {
             main: {
-                intensity: 1
+                intensity: 2
             },
             ambient: {
-                intensity: 0.5
+                intensity: 1.5
             },
         },
         viewControl: {
             autoRotate: true,
+            alpha: 10,
         },
     },
     visualMap: {
@@ -40,13 +41,16 @@ const option = {
         textStyle: {
             color: '#fff'
         },
+        inRange: {
+            color: ['red', 'white'],
+        }
     },
     series: [
         {
             type: 'bar3D',
             coordinateSystem: 'globe',
             data: padsArray,
-            barSize: 0.2,
+            barSize: 1,
             minHeight: 1,
             silent: true,
         }
