@@ -57,6 +57,38 @@ const countries = [
     // "JPN"
 ];
 
+
+function historyMarker(text, year) {
+    const position = year - years[0];
+    return {
+        type: 'line',
+        data: [],
+        showSymbol: false,
+        markLine: {
+            symbol: ['none', 'pin'],
+            symbolSize: 40,
+            emphasis: {
+                label: {
+                    position: 'top',
+                    formatter: () => text
+                },
+                lineStyle: {
+                    width: 2
+                }
+            },
+            label: {
+                formatter: () => ""
+            },
+            data: [{ xAxis: position }],
+            animationDuration: 500,
+            animationDelay: lineRaceTime / (years.length / position),
+            lineStyle: {
+                width: 2
+            }
+        }
+    }
+}
+
 const datasetWithFilters = [];
 const seriesList = [];
 
@@ -70,7 +102,7 @@ echarts.util.each(countries, function (country) {
             type: 'filter',
             config: {
                 and: [
-                    { dimension: 'Country', '=': country }
+                    { dimension: 'Country', '=': country },
                 ]
             }
         }
@@ -103,27 +135,6 @@ echarts.util.each(countries, function (country) {
             itemName: 'Year',
             tooltip: ['Launches']
         },
-        markLine: {
-            symbol: ['none', 'pin'],
-            symbolSize: 40,
-            emphasis: {
-                label: {
-                    formatter: () => "Fall of the Soviet Union"
-                },
-                lineStyle: {
-                    width: 2
-                }
-            },
-            label: {
-                formatter: () => ""
-            },
-            data: [{ xAxis: 34 }],
-            animationDuration: 500,
-            animationDelay: lineRaceTime / (years.length / 34),
-            lineStyle: {
-                width: 2
-            }
-        }
     });
 });
 
@@ -150,7 +161,13 @@ option = {
     grid: {
         right: 140,
     },
-    series: seriesList,
+    series: [
+        ...seriesList,
+        historyMarker('Moon landing', 1969),
+        historyMarker('Fall of the Soviet Union', 1991),
+        historyMarker('Finacial crisis', 2008),
+        historyMarker('Covid-19', 2019),
+    ],
 };
 
 
