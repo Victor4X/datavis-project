@@ -1,155 +1,181 @@
-import launches from "../data/Launches-small.json" assert { type: "json" };
-import { Animation } from "./animation.js";
+import launches from '../data/Launches-by-year.json' assert {type: 'json'};
+import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 
-let chart = echarts.init(document.querySelector("#stackedarea"));
-let option;
-
-const launches_modified = launches.map((launch) => {
-    return { ...launch, year: new Date(launch["net"]).getFullYear() };
-});
-
-let years = new Set();
-launches_modified.forEach((launch) => years.add(launch.year));
-years = Array.from(years);
+echarts.registerTheme('dark-theme', darkTheme)
 
 
-const launches_per_year = {};
-launches_modified.forEach((launch) => {
-    const year = launch.year;
-    const name = launch["launch_service_provider"]["name"];
-    launches_per_year[name] = launches_per_year[name] || {};
-    launches_per_year[name][year] = launches_per_year[name][year]
-        ? launches_per_year[name][year] + 1
-        : 1;
-});
+const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
 
-const getLaunchesPerYear = (data) => {
-    const launches_per_year = new Set();
-    Object.entries(data).forEach(entry => {
-        const [key, value] = entry;
-        launches_per_year.add({ name: key, value: value });
+function calcTotalLaunches(data) {
+    const launches_per_country = {};
+
+    data.forEach((element) => {
+        let country = element["launch_service_provider"]["country_code"];
+        country = eur.includes(country) ? 'EUR' : country;
+
+        launches_per_country[country] = launches_per_country[country]
+            ? launches_per_country[country] + 1
+            : 1;
     });
-    return launches_per_year;
+    return launches_per_country;
 }
 
+const years = Object.keys(launches).sort().filter(year => year <= 2022);
+
+// Setup dataset as 2d array
+const headers = [
+    "Launches",
+    "Country",
+    "Year",
+];
+
+const launches_array = [headers];
+
+years.forEach(year => {
+    const total_launches = calcTotalLaunches(launches[year])
+
+    Object.keys(total_launches).forEach(country => {
+        launches_array.push([total_launches[country], country, year]);
+    });
+});
+
+
+const lineRaceTime = 30000;
+
+const chartDom = document.getElementById('stacked-area');
+const myChart = echarts.init(chartDom, 'dark-theme');
+let option;
+
+
+const countries = [
+    "RUS",
+    "USA",
+    "CHN",
+    "EUR",
+    // "IRN",
+    // "IND",
+    // "JPN"
+];
+
+
+function historyMarker(text, year) {
+    const position = year - years[0];
+    return {
+        type: 'line',
+        data: [],
+        showSymbol: false,
+        markLine: {
+            symbol: ['none', 'pin'],
+            symbolSize: 40,
+            emphasis: {
+                label: {
+                    position: 'top',
+                    formatter: () => text
+                },
+                lineStyle: {
+                    width: 2
+                }
+            },
+            label: {
+                formatter: () => ""
+            },
+            data: [{ xAxis: position }],
+            animationDuration: 500,
+            animationDelay: lineRaceTime / (years.length / position),
+            lineStyle: {
+                width: 2
+            }
+        }
+    }
+}
+
+const datasetWithFilters = [];
+const seriesList = [];
+
+echarts.util.each(countries, function (country) {
+    var datasetId = 'dataset_' + country;
+
+    datasetWithFilters.push({
+        id: datasetId,
+        fromDatasetId: 'dataset_raw',
+        transform: {
+            type: 'filter',
+            config: {
+                and: [
+                    { dimension: 'Country', '=': country },
+                ]
+            }
+        }
+    });
+
+    seriesList.push({
+        type: 'line',
+        stack: 'Total',
+        smooth: true,
+        areaStyle: {},
+        lineStyle: {
+            width: 4
+        },
+        datasetId: datasetId,
+        showSymbol: false,
+        name: country,
+        endLabel: {
+            show: true,
+            formatter: function (params) {
+                return params.value[1] + ': ' + params.value[0];
+            }
+        },
+        labelLayout: {
+            moveOverlap: 'shiftY'
+        },
+        emphasis: {
+            focus: 'series'
+        },
+        encode: {
+            x: 'Year',
+            y: 'Launches',
+            label: ['Country', 'Launches'],
+            itemName: 'Year',
+            tooltip: ['Launches']
+        },
+    });
+});
 
 option = {
-    title: {
-        text: 'Stacked Area Chart'
-    },
+    animationDuration: lineRaceTime,
+    dataset: [
+        {
+            id: 'dataset_raw',
+            source: launches_array
+        },
+        ...datasetWithFilters
+    ],
     tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#6a7985'
-            }
-        }
+        order: 'valueDesc',
+        trigger: 'axis'
     },
-    legend: {
-        data: [""]
+    xAxis: {
+        type: 'category',
+        nameLocation: 'middle'
     },
-    toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
+    yAxis: {
+        name: 'Launches'
     },
     grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: [
-        {
-            type: 'category',
-            boundaryGap: false,
-            //data: years
-        }
-    ],
-    yAxis: [
-        {
-            type: 'value'
-        }
-    ],
-    dataset: {
-        source: getLaunchesPerYear(launches_per_year)
+        right: 140,
     },
     series: [
-        {
-            name: 'launches',
-            type: 'line',
-            stack: 'total',
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            }
-        }
-    ]
-    /*
-    series: [
-        {
-            name: 'Email',
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
-            data: getLaunchesPerYear(launches_per_year)
-        },
-        
-                {
-                    name: 'Union Ads',
-                    type: 'line',
-                    stack: 'Total',
-                    areaStyle: {},
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: [220, 182, 191]
-                },
-                {
-                    name: 'Video Ads',
-                    type: 'line',
-                    stack: 'Total',
-                    areaStyle: {},
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: [150, 232, 201]
-                },
-                {
-                    name: 'Direct',
-                    type: 'line',
-                    stack: 'Total',
-                    areaStyle: {},
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: [320, 332, 301]
-                },
-                {
-                    name: 'Search Engine',
-                    type: 'line',
-                    stack: 'Total',
-                    label: {
-                        show: true,
-                        position: 'top'
-                    },
-                    areaStyle: {},
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: [820, 932, 901]
-                }*/
+        ...seriesList,
+        historyMarker('Moon landing', 1969),
+        historyMarker('Fall of the Soviet Union', 1991),
+        historyMarker('Finacial crisis', 2008),
+        historyMarker('Covid-19', 2019),
+    ],
 };
 
 
+myChart.setOption(option);
 
-option && chart.setOption(option);
+window.addEventListener("resize", myChart.resize);
 
-window.addEventListener("resize", chart.resize);
-
-
-console.log(getLaunchesPerYear(launches_per_year));
+console.log(Object.values(launches[1957]))
