@@ -1,5 +1,8 @@
 import launches from '../data/Launches-by-year.json' assert {type: 'json'};
-import { COLORS_ARRAY } from './constants.js';
+import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
+
+echarts.registerTheme('dark-theme', darkTheme)
+
 
 const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
 
@@ -17,7 +20,7 @@ function calcTotalLaunches(data) {
     return launches_per_country;
 }
 
-const years = Object.keys(launches).sort();
+const years = Object.keys(launches).sort().filter(year => year <= 2022);
 
 // Setup dataset as 2d array
 const headers = [
@@ -28,7 +31,7 @@ const headers = [
 
 const launches_array = [headers];
 
-Object.keys(launches).forEach(year => {
+years.forEach(year => {
     const total_launches = calcTotalLaunches(launches[year])
 
     Object.keys(total_launches).forEach(country => {
@@ -40,7 +43,7 @@ Object.keys(launches).forEach(year => {
 const lineRaceTime = 30000;
 
 const chartDom = document.getElementById('line-race-container');
-const myChart = echarts.init(chartDom);
+const myChart = echarts.init(chartDom, 'dark-theme');
 let option;
 
 
@@ -53,6 +56,38 @@ const countries = [
     // "IND",
     // "JPN"
 ];
+
+
+function historyMarker(text, year) {
+    const position = year - years[0];
+    return {
+        type: 'line',
+        data: [],
+        showSymbol: false,
+        markLine: {
+            symbol: ['none', 'pin'],
+            symbolSize: 40,
+            emphasis: {
+                label: {
+                    position: 'top',
+                    formatter: () => text
+                },
+                lineStyle: {
+                    width: 2
+                }
+            },
+            label: {
+                formatter: () => ""
+            },
+            data: [{ xAxis: position }],
+            animationDuration: 500,
+            animationDelay: lineRaceTime / (years.length / position),
+            lineStyle: {
+                width: 2
+            }
+        }
+    }
+}
 
 const datasetWithFilters = [];
 const seriesList = [];
@@ -67,7 +102,7 @@ echarts.util.each(countries, function (country) {
             type: 'filter',
             config: {
                 and: [
-                    { dimension: 'Country', '=': country }
+                    { dimension: 'Country', '=': country },
                 ]
             }
         }
@@ -100,29 +135,9 @@ echarts.util.each(countries, function (country) {
             itemName: 'Year',
             tooltip: ['Launches']
         },
-        markLine: {
-            symbol: ['none', 'pin'],
-            symbolSize: 40,
-            emphasis: {
-                label: {
-                    formatter: () => "Fall of the Soviet Union"
-                },
-                lineStyle: {
-                    width: 2
-                }
-            },
-            label: {
-                formatter: () => ""
-            },
-            data: [{ xAxis: 34 }],
-            animationDuration: 500,
-            animationDelay: lineRaceTime / (years.length / 34),
-            lineStyle: {
-                width: 2
-            }
-        }
     });
 });
+
 option = {
     animationDuration: lineRaceTime,
     dataset: [
@@ -132,9 +147,6 @@ option = {
         },
         ...datasetWithFilters
     ],
-    title: {
-        text: 'Launches per country'
-    },
     tooltip: {
         order: 'valueDesc',
         trigger: 'axis'
@@ -149,27 +161,13 @@ option = {
     grid: {
         right: 140,
     },
-    series: seriesList,
-    graphic: {
-        type: 'text',
-        style: {
-            text: 'This text',
-            x: "100%",
-            y: 100,
-        },
-        enterAnimation: {
-            duration: 1000,
-            delay: lineRaceTime / (years.length / 33),
-            delay: 10,
-        },
-        enterFrom: {
-            // Fade in
-            style: { opacity: 0 },
-            // Slide in from left
-            x: 0
-        },
-        
-    }
+    series: [
+        ...seriesList,
+        historyMarker('Moon landing', 1969),
+        historyMarker('Fall of the Soviet Union', 1991),
+        historyMarker('Finacial crisis', 2008),
+        historyMarker('Covid-19', 2019),
+    ],
 };
 
 
