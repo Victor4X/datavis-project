@@ -3,7 +3,7 @@ import pads from '../data/Pads.json' assert { type: 'json' };
 const padsArray = [];
 
 pads.forEach(pad => {
-    padsArray.push([parseFloat(pad.latitude), parseFloat(pad.longitude), pad.total_launch_count]);
+    padsArray.push([parseFloat(pad.longitude), parseFloat(pad.latitude), pad.total_launch_count]);
 });
 
 const dom = document.getElementById('pad-globe-container');
@@ -31,7 +31,6 @@ const option = {
         },
         viewControl: {
             autoRotate: true,
-            rotateMouseButton: 'left'
         },
     },
     visualMap: {
@@ -47,7 +46,7 @@ const option = {
             type: 'bar3D',
             coordinateSystem: 'globe',
             data: padsArray,
-            barSize: 1,
+            barSize: 0.2,
             minHeight: 1,
             silent: true,
         }
