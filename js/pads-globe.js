@@ -7,7 +7,7 @@ pads.forEach(pad => {
 });
 
 const dom = document.getElementById('pad-globe-container');
-const myChart = echarts.init(dom, null, {
+const myChart = echarts.init(dom, 'dark-theme', {
     renderer: 'canvas',
     useDirtyRect: false
 });
@@ -19,9 +19,8 @@ const option = {
         baseTexture: '../assets/world.topo.bathy.200401.jpg',
         heightTexture: '/assets/world.topo.bathy.200401.jpg',
         shading: 'lambert',
-        environment: '/assets/starfield.jpg',
         globeRadius: 40,
-        globeOuterRadius: 80,
+        globeOuterRadius: 60,
         light: {
             main: {
                 intensity: 1
