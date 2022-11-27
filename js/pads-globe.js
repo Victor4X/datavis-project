@@ -11,13 +11,12 @@ const myChart = echarts.init(dom, 'dark-theme', {
     renderer: 'canvas',
     useDirtyRect: false
 });
-var ROOT_PATH = 'https://echarts.apache.org/examples';
 
 const option = {
-    backgroundColor: '#000',
+    backgroundColor: '#100f14',
     globe: {
         baseTexture: '../assets/night.jpg',
-        heightTexture: '/assets/world.topo.bathy.200401.jpg',
+        heightTexture: '../assets/world.topo.bathy.200401.jpg',
         shading: 'lambert',
         globeRadius: 40,
         globeOuterRadius: 60,
