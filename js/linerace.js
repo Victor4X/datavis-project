@@ -165,7 +165,7 @@ option = {
         ...seriesList,
         historyMarker('Moon landing', 1969),
         historyMarker('Fall of the Soviet Union', 1991),
-        historyMarker('Finacial crisis', 2008),
+        historyMarker('Financial crisis', 2008),
         historyMarker('Covid-19', 2019),
     ],
 };
