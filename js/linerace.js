@@ -4,6 +4,7 @@ import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 echarts.registerTheme('dark-theme', darkTheme)
 
 
+
 const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
 
 function calcTotalLaunches(data) {
@@ -38,6 +39,7 @@ years.forEach(year => {
         launches_array.push([total_launches[country], country, year]);
     });
 });
+
 
 
 const lineRaceTime = 30000;
@@ -152,8 +154,9 @@ option = {
         trigger: 'axis'
     },
     xAxis: {
+        name: 'Year',
         type: 'category',
-        nameLocation: 'middle'
+        //nameLocation: 'middle'
     },
     yAxis: {
         name: 'Launches'

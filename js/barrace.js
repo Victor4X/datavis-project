@@ -1,7 +1,11 @@
 import launches from "../data/Launches.json" assert { type: "json" };
+import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 import { Animation } from "./animation.js";
 import { settings, callbacks, addSetting } from "./common.js";
 import { COLORS_ARRAY } from "./constants.js";
+
+echarts.registerTheme('dark-theme', darkTheme)
+
 
 // Settings callback test callback
 callbacks.push(() => {
@@ -55,6 +59,7 @@ var option = {
     title: {
         text: "Launches pr country",
     },
+    backgroundColor: "rgba(34,39,54,1)",
     tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -138,9 +143,9 @@ function updateYear(year) {
     option.series[0].data = Object.values(launches).map((launch, i) => {
         return {
             value: launch,
-            itemStyle: {
+            /*itemStyle: {
                 color: COLORS_ARRAY[i]
-            }
+            } */
         }
     });
     // option.yAxis.data = Object.keys(launches).map(name => name.substring(0, 3)),

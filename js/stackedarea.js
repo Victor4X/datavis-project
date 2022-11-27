@@ -4,20 +4,20 @@ import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 echarts.registerTheme('dark-theme', darkTheme)
 
 
-const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
+//const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
 
 function calcTotalLaunches(data) {
-    const launches_per_country = {};
+    const launches_per_provider = {};
 
     data.forEach((element) => {
-        let country = element["launch_service_provider"]["country_code"];
-        country = eur.includes(country) ? 'EUR' : country;
+        let name = element["launch_service_provider"]["name"];
+        //country = eur.includes(country) ? 'EUR' : country;
 
-        launches_per_country[country] = launches_per_country[country]
-            ? launches_per_country[country] + 1
+        launches_per_provider[name] = launches_per_provider[name]
+            ? launches_per_provider[name] + 1
             : 1;
     });
-    return launches_per_country;
+    return launches_per_provider;
 }
 
 const years = Object.keys(launches).sort().filter(year => year <= 2022);
@@ -25,7 +25,7 @@ const years = Object.keys(launches).sort().filter(year => year <= 2022);
 // Setup dataset as 2d array
 const headers = [
     "Launches",
-    "Country",
+    "Provider",
     "Year",
 ];
 
@@ -34,8 +34,8 @@ const launches_array = [headers];
 years.forEach(year => {
     const total_launches = calcTotalLaunches(launches[year])
 
-    Object.keys(total_launches).forEach(country => {
-        launches_array.push([total_launches[country], country, year]);
+    Object.keys(total_launches).forEach(name => {
+        launches_array.push([total_launches[name], name, year]);
     });
 });
 
@@ -47,15 +47,18 @@ const myChart = echarts.init(chartDom, 'dark-theme');
 let option;
 
 
-const countries = [
-    "RUS",
-    "USA",
-    "CHN",
-    "EUR",
-    // "IRN",
-    // "IND",
-    // "JPN"
-];
+let providers = [];
+years.forEach(year => {
+    // Get all launch_service_provider.name for this year
+    const providers_this_year = launches[year].map(launch => launch["launch_service_provider"]["name"]);
+    // Add them to the set
+    providers_this_year.forEach(provider => {
+        if (!providers.includes(provider)) {
+            providers.push(provider)
+        }
+    });
+});
+
 
 
 function historyMarker(text, year) {
@@ -92,8 +95,9 @@ function historyMarker(text, year) {
 const datasetWithFilters = [];
 const seriesList = [];
 
-echarts.util.each(countries, function (country) {
-    var datasetId = 'dataset_' + country;
+
+echarts.util.each(providers, function (name) {
+    var datasetId = 'dataset_' + name;
 
     datasetWithFilters.push({
         id: datasetId,
@@ -102,7 +106,7 @@ echarts.util.each(countries, function (country) {
             type: 'filter',
             config: {
                 and: [
-                    { dimension: 'Country', '=': country },
+                    { dimension: 'Provider', '=': name },
                 ]
             }
         }
@@ -110,15 +114,15 @@ echarts.util.each(countries, function (country) {
 
     seriesList.push({
         type: 'line',
-        stack: 'Total',
+        //stack: 'Total',
         smooth: true,
-        areaStyle: {},
+        //areaStyle: {},
         lineStyle: {
-            width: 4
+            width: 1
         },
         datasetId: datasetId,
         showSymbol: false,
-        name: country,
+        name: name,
         endLabel: {
             show: true,
             formatter: function (params) {
@@ -134,12 +138,14 @@ echarts.util.each(countries, function (country) {
         encode: {
             x: 'Year',
             y: 'Launches',
-            label: ['Country', 'Launches'],
+            label: ['Provider', 'Launches'],
             itemName: 'Year',
             tooltip: ['Launches']
         },
     });
 });
+
+console.log(datasetWithFilters);
 
 option = {
     animationDuration: lineRaceTime,
@@ -178,4 +184,3 @@ myChart.setOption(option);
 
 window.addEventListener("resize", myChart.resize);
 
-console.log(Object.values(launches[1957]))

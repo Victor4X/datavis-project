@@ -1,5 +1,4 @@
 const settingsDiv = document.querySelector("#settings");
-console.log("Loading settings");
 
 const settings = {};
 const callbacks = [];
@@ -38,11 +37,11 @@ const addSetting = (key, setting) => {
 }
 
 addSetting("test", {
-        label: "Test setting",
-        value: 0,
-        type: "number",
-        attrs: { min: 0, max: 10 }
-    }
+    label: "Test setting",
+    value: 0,
+    type: "number",
+    attrs: { min: 0, max: 10 }
+}
 );
 
 export { settings, addSetting, callbacks };

@@ -1,8 +1,11 @@
 import worldJson from "../assets/world.json" assert { type: "json" };
 import launches from "../data/Launches.json" assert { type: "json" };
 import { Animation } from "./animation.js";
+import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 import { settings, callbacks, addSetting } from "./common.js";
 import { COLORS_ARRAY } from "./constants.js";
+
+echarts.registerTheme('dark-theme', darkTheme)
 
 var chartDom = document.getElementById('maprace');
 var myChart = echarts.init(chartDom);
@@ -81,6 +84,7 @@ option = {
     showDelay: 0,
     transitionDuration: 0.2
   },
+  backgroundColor: "rgba(34,39,54,1)",
   visualMap: {
     left: 'right',
     min: 0,
