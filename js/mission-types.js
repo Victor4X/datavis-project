@@ -232,6 +232,8 @@ const option = {
   ]
 };
 
+window.addEventListener("resize", myChart.resize);
+
 myChart.setOption(option);
 
 window.addEventListener("resize", myChart.resize);

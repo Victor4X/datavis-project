@@ -46,7 +46,7 @@ function calcTotalLaunches(data) {
   const launches_per_country = {};
 
   data.forEach((element) => {
-    const country = countryMapCodes[element["launch_service_provider"]["country_code"]];
+    const country = element["launch_service_provider"]["country_code"];
     launches_per_country[country] = launches_per_country[country]
       ? launches_per_country[country] + 1
       : 1;
@@ -56,6 +56,7 @@ function calcTotalLaunches(data) {
 
 myChart.showLoading();
 myChart.hideLoading();
+<<<<<<< HEAD
 echarts.registerMap('world', worldJson, {
   Alaska: {
     left: -131,
@@ -74,6 +75,9 @@ echarts.registerMap('world', worldJson, {
   }
 });
 
+=======
+echarts.registerMap('world', worldJson);
+>>>>>>> automated_rocket_info
 option = {
   title: {
     text: 'Global Launches Over Time',
@@ -134,10 +138,19 @@ option = {
       ),
     }
   ],
+<<<<<<< HEAD
   animationDuration: 500,
   animationDurationUpdate: 2000,
   animationEasing: "cubicInOut",
   animationEasingUpdate: "cubicInOut",
+=======
+  animationDurationUpdate: 1000,
+        universalTransition: true,
+/*      animationDuration: 500,
+      animationDurationUpdate: 2000,
+      animationEasing: "cubicInOut",
+      animationEasingUpdate: "cubicInOut",  */
+>>>>>>> automated_rocket_info
   graphic: {
     elements: [
       {
@@ -162,7 +175,7 @@ function updateYear(year) {
   const launches = calcTotalLaunches(source);
   option.series[0].data = Object.entries(launches).map((launch, i) => {
     return {
-      name: launch[0],
+      name: countryMapCodes[launch[0]],
       value: launch[1],
     }
   });
@@ -179,10 +192,16 @@ function repeatOften() {
 }
 
 const animation = new Animation(() => 2000, repeatOften);
-animation.start()
+animation.start();
+
+window.addEventListener("resize", myChart.resize);
 
 updateYear(years[0]);
 
 myChart.setOption(option);
 
+<<<<<<< HEAD
 window.addEventListener("resize", myChart.resize);
+=======
+export { option };
+>>>>>>> automated_rocket_info
