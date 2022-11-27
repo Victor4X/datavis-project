@@ -6,12 +6,12 @@ const postDiv = document.querySelector("#post-countdown");
 const preDiv = document.querySelector("#pre-countdown");
 if (!animationPlayed) {
     let count = 3;
-    
+
     const h1 = document.querySelector("#countdown");
     h1.textContent = `T-${count--}`;
-    
+
     const animation = new Animation(() => 1500, () => {
-        h1.textContent = count >= 0 ? count : "LIFT OF!";
+        h1.textContent = count >= 0 ? count : "LIFT OFF!";
         count--;
         if (count === -3) {
             animation.stop();
@@ -21,7 +21,7 @@ if (!animationPlayed) {
         }
     });
     animation.start();
-    localStorage.setItem("played","true");
+    localStorage.setItem("played", "true");
 }
 
 else {
