@@ -1,0 +1,99 @@
+[
+    {
+        "name": "USSR",
+        "image": "./assets/ussr.png",
+        "rockets": [
+            {
+                "name": "Soyuz",
+                "image": "./assets/soyuz-fg.jpg",
+                "info": "1966 - 1975"
+            },
+            {
+                "name": "Soyuz",
+                "image": "./assets/soyuz-fg.jpg",
+                "info": "1966 - 1975"
+            },
+            {
+                "name": "Soyuz",
+                "image": "./assets/soyuz-fg.jpg",
+                "info": "1966 - 1975"
+            },
+            {
+                "name": "Soyuz",
+                "image": "./assets/soyuz-fg.jpg",
+                "info": "1966 - 1975"
+            },
+            {
+                "name": "Soyuz",
+                "image": "./assets/soyuz-fg.jpg",
+                "info": "1966 - 1975"
+            }
+        ]
+    },
+    {
+        "name": "USA",
+        "image": "./assets/usa.png",
+        "rockets": [
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            },
+            {
+                "name": "Saturn V",
+                "image": "./assets/saturn_v.jpg",
+                "info": "1967 - 1973"
+            }
+        ]
+    }
+]

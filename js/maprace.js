@@ -43,7 +43,7 @@ function calcTotalLaunches(data) {
   const launches_per_country = {};
 
   data.forEach((element) => {
-    const country = countryMapCodes[element["launch_service_provider"]["country_code"]];
+    const country = element["launch_service_provider"]["country_code"];
     launches_per_country[country] = launches_per_country[country]
       ? launches_per_country[country] + 1
       : 1;
@@ -53,23 +53,7 @@ function calcTotalLaunches(data) {
 
 myChart.showLoading();
 myChart.hideLoading();
-echarts.registerMap('world', worldJson, {
-  Alaska: {
-    left: -131,
-    top: 25,
-    width: 15
-  },
-  Hawaii: {
-    left: -110,
-    top: 28,
-    width: 5
-  },
-  'Puerto Rico': {
-    left: -76,
-    top: 26,
-    width: 2
-  }
-});
+echarts.registerMap('world', worldJson);
 option = {
   title: {
     text: 'Global Lanches Over Time',
@@ -124,15 +108,17 @@ option = {
           show: true
         }
       },
-      data:  Object.keys(calcTotalLaunches(launches_modified)).map((name) =>
+      data: Object.keys(calcTotalLaunches(launches_modified)).map((name) =>
         name.substring(0, 3)
       ), 
     }
   ],
-     animationDuration: 500,
+  animationDurationUpdate: 1000,
+        universalTransition: true,
+/*      animationDuration: 500,
       animationDurationUpdate: 2000,
       animationEasing: "cubicInOut",
-      animationEasingUpdate: "cubicInOut", 
+      animationEasingUpdate: "cubicInOut",  */
   graphic: {
     elements: [
       {
@@ -157,7 +143,7 @@ function updateYear(year) {
   const launches = calcTotalLaunches(source);
   option.series[0].data = Object.entries(launches).map((launch, i) => {
     return {
-      name: launch[0],
+      name: countryMapCodes[launch[0]],
       value: launch[1],
     }
   });
@@ -178,8 +164,12 @@ function repeatOften() {
 }
 
 const animation = new Animation(() => 2000, repeatOften);
-animation.start()
+animation.start();
+
+window.addEventListener("resize", myChart.resize);
 
 updateYear(years[0]);
 
 myChart.setOption(option);
+
+export { option };

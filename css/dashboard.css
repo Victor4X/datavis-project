@@ -1,8 +1,20 @@
+@import url('https://fonts.cdnfonts.com/css/seven-segment');
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.setting>label{
+#pre-countdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#countdown {
+    font-family: 'Seven Segment', sans-serif;
+    font-size: 10rem;
+}
+
+.setting>label {
     margin-right: 10px;
 }
 
@@ -10,26 +22,49 @@ body {
     text-align: center;
 }
 
-.country, .rocket {
+.country,
+.rocket {
     box-shadow: 0 0 .5rem .5rem rgba(0, 0, 0, 0.25);
-    padding: 2rem;
+    padding: 4rem;
 }
 
-.country, .rocket, .rocket-info-box>img  {
-    border-radius: 50px;
+.country,
+.rocket,
+.rocket-info-box>img {
+    border-radius: 10px;
 }
 
-.country, .rocket {
+.country {
     margin: 2rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.country > h2 {
+    font-size: 4rem;
+    -webkit-text-stroke: 5px black;
+    -webkit-text-fill-color: white;
 }
 
 .rockets {
     display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     justify-content: center;
 }
 
 .rocket {
-    max-width: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    height: 260px;
+    flex-direction: column;
+    position: relative;
+    width: 300px;
 }
 
 .rocket-info-box {
@@ -37,6 +72,6 @@ body {
     justify-content: center;
 }
 
-.rocket-info-box > img {
-    max-width: 15rem;
+.rocket-info-box>img {
+    max-height: 12rem;
 }

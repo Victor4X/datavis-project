@@ -2,6 +2,7 @@ export class Animation {
 	constructor(delayTime, callback) {
 		this.delayTime = delayTime;
 		this.callback = callback;
+		this.stopAnimation = false;
 	}
 
 	start() {
@@ -18,8 +19,14 @@ export class Animation {
 
 		}
 
-		window.requestAnimationFrame((timestamp) =>
-			this.update(timestamp)
-		);
+		if (!this.stopAnimation) {
+			window.requestAnimationFrame((timestamp) =>
+				this.update(timestamp)
+			);
+		}
+	}
+
+	stop() {
+		this.stopAnimation = true;
 	}
 }
