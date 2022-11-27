@@ -1,5 +1,8 @@
 import launches from '../data/Launches-by-year.json' assert {type: 'json'};
-import { COLORS_ARRAY } from './constants.js';
+import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
+
+echarts.registerTheme('dark-theme', darkTheme)
+
 
 const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
 
@@ -17,7 +20,7 @@ function calcTotalLaunches(data) {
     return launches_per_country;
 }
 
-const years = Object.keys(launches).sort();
+const years = Object.keys(launches).sort().filter(year => year <= 2022);
 
 // Setup dataset as 2d array
 const headers = [
@@ -28,7 +31,7 @@ const headers = [
 
 const launches_array = [headers];
 
-Object.keys(launches).forEach(year => {
+years.forEach(year => {
     const total_launches = calcTotalLaunches(launches[year])
 
     Object.keys(total_launches).forEach(country => {
@@ -40,7 +43,7 @@ Object.keys(launches).forEach(year => {
 const lineRaceTime = 30000;
 
 const chartDom = document.getElementById('line-race-container');
-const myChart = echarts.init(chartDom);
+const myChart = echarts.init(chartDom, 'dark-theme');
 let option;
 
 
@@ -123,6 +126,7 @@ echarts.util.each(countries, function (country) {
         }
     });
 });
+
 option = {
     animationDuration: lineRaceTime,
     dataset: [
@@ -132,9 +136,6 @@ option = {
         },
         ...datasetWithFilters
     ],
-    title: {
-        text: 'Launches per country'
-    },
     tooltip: {
         order: 'valueDesc',
         trigger: 'axis'
@@ -168,7 +169,7 @@ option = {
             // Slide in from left
             x: 0
         },
-        
+
     }
 };
 

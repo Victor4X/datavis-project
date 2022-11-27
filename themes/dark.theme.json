@@ -10,7 +10,8 @@
     "textStyle": {},
     "title": {
         "textStyle": {
-            "color": "#ffaf51"
+            "color": "#ffffff",
+            "fontSize": 24
         },
         "subtextStyle": {
             "color": "#eeeeee"

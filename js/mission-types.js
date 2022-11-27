@@ -94,10 +94,6 @@ const option = {
     text: 'Launch missions vs. mission orbits',
     left: '40%',
     top: '5%',
-    textStyle: {
-      fontSize: 24,
-      color: '#fff'
-    }
   },
   grid: [
     {
