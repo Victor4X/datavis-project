@@ -169,13 +169,9 @@ function updateYear(year) {
 
 let y = 1;
 function repeatOften() {
-  // Do whatever
-  //if (checkbox.checked) {
   updateYear(years[y]);
-  //yearSlider.value = y;
   y++;
   y %= years.length;
-  //}
 }
 
 const animation = new Animation(() => 2000, repeatOften);

@@ -168,9 +168,11 @@ option = {
             // Slide in from left
             x: 0
         },
-        
+
     }
 };
 
 
 myChart.setOption(option);
+
+window.addEventListener("resize", myChart.resize);
