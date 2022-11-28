@@ -90,11 +90,6 @@ const option = {
     position: 'top',
     valueFormatter: (value) => value[2] ? Math.round(value[2] * 100) + "%" : value
   },
-  title: {
-    text: 'Launch missions vs. mission orbits',
-    left: '40%',
-    top: '5%',
-  },
   grid: [
     {
       top: '25%',
