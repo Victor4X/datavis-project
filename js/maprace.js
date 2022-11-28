@@ -76,7 +76,7 @@ echarts.registerMap('world', worldJson, {
 
 option = {
   title: {
-    text: 'Global Launches Over Time',
+    text: 'Cumulative Global Launches Over Time',
     left: 'right'
   },
   tooltip: {
