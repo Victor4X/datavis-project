@@ -153,10 +153,14 @@
     <script>
         const loader = document.getElementById("loader");
         const content = document.getElementById("content");
-        
-        document.body.onload = () => {
-            loader.style.display = "none";
-            content.style.opacity = "1";
+        // Check if chrome https://bugzilla.mozilla.org/show_bug.cgi?id=1736059
+        if (window.chrome){
+            document.body.onload = () => {
+                loader.style.display = "none";
+                content.style.opacity = "1";
+            }
+        } else {
+            alert("This page only works in chrome. More info here:\nhttps://bugzilla.mozilla.org/show_bug.cgi?id=1736059");
         }
     </script>
 </body>
