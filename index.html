@@ -22,7 +22,8 @@
 
 <body>
     <div class="moon" id="loader">
-        <img src="https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/space-rocket-512.png" style="width:30px;height:20px;" class="loader">
+        <img src="https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/space-rocket-512.png"
+            style="width:30px;height:20px;" class="loader">
         <ul>
             <li></li>
             <li></li>
@@ -33,42 +34,44 @@
             <li></li>
         </ul>
     </div>
-    <!--
+    <div id="content" style="opacity: 0">
 
+        <!--
+            
         <div
         style="background-color: rgba(34,39,54,1);color: #fff; font-size: 24px; font-weight: bold; text-align: center; height: 100px;padding-top:10em">
         Stacked Area Chart</div>
         <div id="stacked-area" style="width: 100%; height:600px;"></div>
     -->
-    <div class="spacer" style="padding-top:10em">Who are the biggest nations in space travel over time?</div>
-    <div id="line-race-container" style="width: 100%;height:600px;"></div>
-    <div class="spacer" style="padding-top:10em">What are the most frequent objectives of space travel?</div>
-    <div id="mission-types-container" style="height: 100vh; width: 100%; overflow: hidden;"></div>
-    <!-- 
+        <div class="spacer" style="padding-top:10em">Who are the biggest nations in space travel over time?</div>
+        <div id="line-race-container" style="width: 100%;height:600px;"></div>
+        <div class="spacer" style="padding-top:10em">What are the most frequent objectives of space travel?</div>
+        <div id="mission-types-container" style="height: 100vh; width: 100%; overflow: hidden;"></div>
+        <!-- 
     <div id="line-race-container" style="width: 100%;height:400px;"></div>>
 -->
-    <div class="spacer" style="padding-top: 10em;">How has space travel market share evolved over time?</div>
-    <div id="stacked-area" style="width: 100%; height:600px;"></div>
+        <div class="spacer" style="padding-top: 10em;">How has space travel market share evolved over time?</div>
+        <div id="stacked-area" style="width: 100%; height:600px;"></div>
 
-    <div style="display:none">
-        <div id="settings"></div>
+        <div style="display:none">
+            <div id="settings"></div>
 
-        <input class="form-check-input" type="checkbox" value="" id="animationCheckbox" checked>
-        <label class="form-check-label" for="animationCheckbox">
-            Enable animations
-        </label>
+            <input class="form-check-input" type="checkbox" value="" id="animationCheckbox" checked>
+            <label class="form-check-label" for="animationCheckbox">
+                Enable animations
+            </label>
 
-        <input type="range" name="" id="year_slider">
-    </div>
-    <div class="spacer" style="padding-top: 5em;">Launches per year per country</div>
-    <div style="display: flex;">
-        <div id="barrace" style="width: 50%;height:400px;"></div>
-        <div id="maprace" style="width: 50%;height:400px;"></div>
-    </div>
-    <div class="spacer" style="padding-top: 5em;">Cumulative launches by pads</div>
-    <div id="pad-globe-container" style="height: 100vh"></div>
+            <input type="range" name="" id="year_slider">
+        </div>
+        <div class="spacer" style="padding-top: 5em;">Launches per year per country</div>
+        <div style="display: flex;">
+            <div id="barrace" style="width: 50%;height:400px;"></div>
+            <div id="maprace" style="width: 50%;height:400px;"></div>
+        </div>
+        <div class="spacer" style="padding-top: 5em;">Cumulative launches by pads</div>
+        <div id="pad-globe-container" style="height: 100vh"></div>
 
-    <!--
+        <!--
     <div class="rocket-history">
         <h1>Rockets Throughout History</h1>
         <div class="country">
@@ -145,11 +148,15 @@
             </div>
         </div>
     </div>
-    -->
+-->
+    </div>
     <script>
         const loader = document.getElementById("loader");
+        const content = document.getElementById("content");
+        
         document.body.onload = () => {
             loader.style.display = "none";
+            content.style.opacity = "1";
         }
     </script>
 </body>
