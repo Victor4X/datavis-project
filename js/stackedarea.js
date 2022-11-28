@@ -4,21 +4,20 @@ import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 echarts.registerTheme('dark-theme', darkTheme)
 
 
-
-const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
+//const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
 
 function calcTotalLaunches(data) {
-    const launches_per_country = {};
+    const launches_per_provider = {};
 
     data.forEach((element) => {
-        let country = element["launch_service_provider"]["country_code"];
-        country = eur.includes(country) ? 'EUR' : country;
+        let name = element["launch_service_provider"]["type"];
+        //country = eur.includes(country) ? 'EUR' : country;
 
-        launches_per_country[country] = launches_per_country[country]
-            ? launches_per_country[country] + 1
+        launches_per_provider[name] = launches_per_provider[name]
+            ? launches_per_provider[name] + 1
             : 1;
     });
-    return launches_per_country;
+    return launches_per_provider;
 }
 
 const years = Object.keys(launches).sort().filter(year => year <= 2022);
@@ -26,37 +25,62 @@ const years = Object.keys(launches).sort().filter(year => year <= 2022);
 // Setup dataset as 2d array
 const headers = [
     "Launches",
-    "Country",
+    "Provider",
     "Year",
 ];
 
 const launches_array = [headers];
+const seriesList = [];
 
 years.forEach(year => {
     const total_launches = calcTotalLaunches(launches[year])
 
-    Object.keys(total_launches).forEach(country => {
-        launches_array.push([total_launches[country], country, year]);
+    Object.keys(total_launches).forEach(name => {
+        launches_array.push([total_launches[name], name, year]);
     });
 });
 
 
 const lineRaceTime = 30000;
 
-const chartDom = document.getElementById('line-race-container');
+const chartDom = document.getElementById('stacked-area');
 const myChart = echarts.init(chartDom, 'dark-theme');
 let option;
 
 
-const countries = [
-    "RUS",
-    "USA",
-    "CHN",
-    "EUR",
-    // "IRN",
-    // "IND",
-    // "JPN"
-];
+let providers = [];
+
+// 
+// soviet: [2, 3, 4, 5, 6, 7, 8],
+// us: [1, 3, 4, 5, 6, 7, 8],
+// providername: [2, 3, 4, 5, 6, 7, 8],
+
+
+years.forEach(year => {
+    // Get all launch_service_provider.name for this year
+    const providers_this_year = launches[year].map(launch => launch["launch_service_provider"]["type"]);
+    // Add them to the set
+    providers_this_year.forEach(provider => {
+        if (!providers.includes(provider)) {
+            providers.push(provider)
+        }
+    });
+});
+
+// console.log(providersObj);
+
+// Object.entries(providersObj).forEach((key, value) => {
+//     seriesList.push({
+//         name: key,
+//         type: 'line',
+//         stack: 'Total',
+//         areaStyle: {},
+//         emphasis: {
+//             focus: 'series'
+//         },
+//         data: [1957, 1958]
+//     })
+// });
 
 
 function historyMarker(text, year) {
@@ -91,10 +115,12 @@ function historyMarker(text, year) {
 }
 
 const datasetWithFilters = [];
-const seriesList = [];
 
-echarts.util.each(countries, function (country) {
-    var datasetId = 'dataset_' + country;
+providers = providers.filter(provider => provider != "Multinational");
+
+
+echarts.util.each(providers, function (name) {
+    var datasetId = 'dataset_' + name;
 
     datasetWithFilters.push({
         id: datasetId,
@@ -103,7 +129,7 @@ echarts.util.each(countries, function (country) {
             type: 'filter',
             config: {
                 and: [
-                    { dimension: 'Country', '=': country },
+                    { dimension: 'Provider', '=': name },
                 ]
             }
         }
@@ -112,11 +138,13 @@ echarts.util.each(countries, function (country) {
     seriesList.push({
         type: 'line',
         lineStyle: {
-            width: 4
+            width: 0
         },
+        stack: 'Total',
+        areaStyle: {},
         datasetId: datasetId,
         showSymbol: false,
-        name: country,
+        name: name,
         endLabel: {
             show: true,
             formatter: function (params) {
@@ -132,15 +160,17 @@ echarts.util.each(countries, function (country) {
         encode: {
             x: 'Year',
             y: 'Launches',
-            label: ['Country', 'Launches'],
+            label: ['Provider', 'Launches'],
             itemName: 'Year',
             tooltip: ['Launches']
         },
     });
 });
 
+console.log(providers);
+
 option = {
-    animationDuration: lineRaceTime,
+    // animationDuration: lineRaceTime,
     dataset: [
         {
             id: 'dataset_raw',
@@ -155,7 +185,6 @@ option = {
     xAxis: {
         name: 'Year',
         type: 'category',
-        //nameLocation: 'middle'
     },
     yAxis: {
         name: 'Launches'
@@ -163,20 +192,11 @@ option = {
     grid: {
         right: 140,
     },
-    series: [
-        ...seriesList,
-        historyMarker('Laika - Sputnik 2', 1957),
-        historyMarker('Yuri Gagarin', 1961),
-        historyMarker('First spce '),
-        historyMarker('First space docking event', 1966),
-        historyMarker('Moon landing', 1969),
-        historyMarker('Fall of the Soviet Union', 1991),
-        historyMarker('Financial crisis', 2008),
-        historyMarker('Covid-19', 2019),
-    ],
+    series: seriesList
 };
 
 
 myChart.setOption(option);
 
 window.addEventListener("resize", myChart.resize);
+

@@ -1,6 +1,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
+    background-color: rgba(34, 39, 54, 1);
 }
 
 .setting>label {

@@ -1,17 +1,16 @@
 {
     "color": [
-        "#ff715e",
-        "#ffaf51",
-        "#ffee51",
-        "#8c6ac4",
-        "#715c87"
+        "#f94144",
+        "#277da1",
+        "#f9c74f",
+        "#43aa8b",
+        "#277da1"
     ],
     "backgroundColor": "rgba(34,39,54,1)",
     "textStyle": {},
     "title": {
         "textStyle": {
-            "color": "#ffffff",
-            "fontSize": 24
+            "color": "#ffaf51"
         },
         "subtextStyle": {
             "color": "#eeeeee"
@@ -109,11 +108,11 @@
         "symbol": "emptyCircle",
         "smooth": false,
         "color": [
-            "#ff715e",
-            "#ffaf51",
-            "#ffee51",
-            "#8c6ac4",
-            "#715c87"
+            "#f94144",
+            "#277da1",
+            "#f9c74f",
+            "#43aa8b",
+            "#277da1"
         ],
         "label": {
             "color": "#383838"
@@ -363,7 +362,7 @@
     },
     "visualMap": {
         "color": [
-            "#ff503c",
+            "#f94144",
             "#493453"
         ]
     },

@@ -1,8 +1,11 @@
 import worldJson from "../assets/world.json" assert { type: "json" };
 import launches from "../data/Launches.json" assert { type: "json" };
 import { Animation } from "./animation.js";
+import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 import { settings, callbacks, addSetting } from "./common.js";
 import { COLORS_ARRAY } from "./constants.js";
+
+echarts.registerTheme('dark-theme', darkTheme)
 
 var chartDom = document.getElementById('maprace');
 var myChart = echarts.init(chartDom);
@@ -70,9 +73,10 @@ echarts.registerMap('world', worldJson, {
     width: 2
   }
 });
+
 option = {
   title: {
-    text: 'Global Lanches Over Time',
+    text: 'Global Launches Over Time',
     left: 'right'
   },
   tooltip: {
@@ -80,24 +84,13 @@ option = {
     showDelay: 0,
     transitionDuration: 0.2
   },
+  backgroundColor: "rgba(34,39,54,1)",
   visualMap: {
     left: 'right',
     min: 0,
     max: 3500,
     inRange: {
-      color: [
-        '#313695',
-        '#4575b4',
-        '#74add1',
-        '#abd9e9',
-        '#e0f3f8',
-        '#ffffbf',
-        '#fee090',
-        '#fdae61',
-        '#f46d43',
-        '#d73027',
-        '#a50026'
-      ]
+      color: darkTheme.visualMap.color.reverse()
     },
     text: ['Launches'],
     calculable: true
@@ -124,15 +117,15 @@ option = {
           show: true
         }
       },
-      data:  Object.keys(calcTotalLaunches(launches_modified)).map((name) =>
+      data: Object.keys(calcTotalLaunches(launches_modified)).map((name) =>
         name.substring(0, 3)
-      ), 
+      ),
     }
   ],
-     animationDuration: 500,
-      animationDurationUpdate: 2000,
-      animationEasing: "cubicInOut",
-      animationEasingUpdate: "cubicInOut", 
+  animationDuration: 500,
+  animationDurationUpdate: 2000,
+  animationEasing: "cubicInOut",
+  animationEasingUpdate: "cubicInOut",
   graphic: {
     elements: [
       {
@@ -168,13 +161,9 @@ function updateYear(year) {
 
 let y = 1;
 function repeatOften() {
-    // Do whatever
-    //if (checkbox.checked) {
-        updateYear(years[y]);
-        //yearSlider.value = y;
-        y++;
-        y %= years.length;
-    //}
+  updateYear(years[y]);
+  y++;
+  y %= years.length;
 }
 
 const animation = new Animation(() => 2000, repeatOften);
@@ -183,3 +172,5 @@ animation.start()
 updateYear(years[0]);
 
 myChart.setOption(option);
+
+window.addEventListener("resize", myChart.resize);
