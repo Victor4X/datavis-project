@@ -66,9 +66,6 @@ var option = {
             type: 'shadow'
         }
     },
-    legend: {
-        data: ["launches"],
-    },
     xAxis: {},
     yAxis: {
         inverse: true,

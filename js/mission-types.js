@@ -153,6 +153,7 @@ const option = {
     min: 0,
     max: 1,
     precision: 2,
+    calculable: true,
     orient: 'horizontal',
     left: '40%',
     bottom: '30px',
@@ -211,7 +212,7 @@ const option = {
       }),
       itemStyle: {
         color: darkTheme.color[2]
-      }
+      },
     },
     {
       name: 'total mission types',
@@ -237,5 +238,7 @@ const option = {
     },
   ]
 };
+
+window.addEventListener("resize",myChart.resize);
 
 myChart.setOption(option);
