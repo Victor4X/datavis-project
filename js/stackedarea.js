@@ -10,7 +10,7 @@ function calcTotalLaunches(data) {
     const launches_per_provider = {};
 
     data.forEach((element) => {
-        let name = element["launch_service_provider"]["name"];
+        let name = element["launch_service_provider"]["type"];
         //country = eur.includes(country) ? 'EUR' : country;
 
         launches_per_provider[name] = launches_per_provider[name]
@@ -30,6 +30,7 @@ const headers = [
 ];
 
 const launches_array = [headers];
+const seriesList = [];
 
 years.forEach(year => {
     const total_launches = calcTotalLaunches(launches[year])
@@ -48,9 +49,16 @@ let option;
 
 
 let providers = [];
+
+// 
+// soviet: [2, 3, 4, 5, 6, 7, 8],
+// us: [1, 3, 4, 5, 6, 7, 8],
+// providername: [2, 3, 4, 5, 6, 7, 8],
+
+
 years.forEach(year => {
     // Get all launch_service_provider.name for this year
-    const providers_this_year = launches[year].map(launch => launch["launch_service_provider"]["name"]);
+    const providers_this_year = launches[year].map(launch => launch["launch_service_provider"]["type"]);
     // Add them to the set
     providers_this_year.forEach(provider => {
         if (!providers.includes(provider)) {
@@ -59,6 +67,20 @@ years.forEach(year => {
     });
 });
 
+// console.log(providersObj);
+
+// Object.entries(providersObj).forEach((key, value) => {
+//     seriesList.push({
+//         name: key,
+//         type: 'line',
+//         stack: 'Total',
+//         areaStyle: {},
+//         emphasis: {
+//             focus: 'series'
+//         },
+//         data: [1957, 1958]
+//     })
+// });
 
 
 function historyMarker(text, year) {
@@ -93,7 +115,8 @@ function historyMarker(text, year) {
 }
 
 const datasetWithFilters = [];
-const seriesList = [];
+
+providers = providers.filter(provider => provider != "Multinational");
 
 
 echarts.util.each(providers, function (name) {
@@ -114,12 +137,11 @@ echarts.util.each(providers, function (name) {
 
     seriesList.push({
         type: 'line',
-        //stack: 'Total',
-        smooth: true,
-        //areaStyle: {},
         lineStyle: {
-            width: 1
+            width: 0
         },
+        stack: 'Total',
+        areaStyle: {},
         datasetId: datasetId,
         showSymbol: false,
         name: name,
@@ -145,10 +167,10 @@ echarts.util.each(providers, function (name) {
     });
 });
 
-console.log(datasetWithFilters);
+console.log(providers);
 
 option = {
-    animationDuration: lineRaceTime,
+    // animationDuration: lineRaceTime,
     dataset: [
         {
             id: 'dataset_raw',
@@ -161,8 +183,8 @@ option = {
         trigger: 'axis'
     },
     xAxis: {
+        name: 'Year',
         type: 'category',
-        nameLocation: 'middle'
     },
     yAxis: {
         name: 'Launches'
@@ -170,13 +192,7 @@ option = {
     grid: {
         right: 140,
     },
-    series: [
-        ...seriesList,
-        historyMarker('Moon landing', 1969),
-        historyMarker('Fall of the Soviet Union', 1991),
-        historyMarker('Finacial crisis', 2008),
-        historyMarker('Covid-19', 2019),
-    ],
+    series: seriesList
 };
 
 

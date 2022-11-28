@@ -3,23 +3,23 @@
     "themeName": "dark-theme",
     "theme": {
         "seriesCnt": "4",
-        "backgroundColor": "#222736",
+        "backgroundColor": "rgba(34,39,54,1)",
         "titleColor": "#ffaf51",
         "subtitleColor": "#eeeeee",
         "textColorShow": false,
         "textColor": "#333",
         "markTextColor": "#383838",
         "color": [
-            "#ff715e",
-            "#ffaf51",
-            "#ffee51",
-            "#8c6ac4",
-            "#715c87"
+            "#f94144",
+            "#277da1",
+            "#f9c74f",
+            "#43aa8b",
+            "#277da1"
         ],
         "borderColor": "#cccccc",
         "borderWidth": "0",
         "visualMapColor": [
-            "#ff503c",
+            "#f94144",
             "#493453"
         ],
         "legendTextColor": "#999999",

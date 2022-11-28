@@ -214,6 +214,9 @@ const option = {
           value: orbitTotals[orbit]
         }
       }),
+      itemStyle: {
+        color: darkTheme.color[2]
+      }
     },
     {
       name: 'total mission types',

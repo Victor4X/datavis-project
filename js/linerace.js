@@ -41,7 +41,6 @@ years.forEach(year => {
 });
 
 
-
 const lineRaceTime = 30000;
 
 const chartDom = document.getElementById('line-race-container');
@@ -166,9 +165,13 @@ option = {
     },
     series: [
         ...seriesList,
+        historyMarker('Laika - Sputnik 2', 1957),
+        historyMarker('Yuri Gagarin', 1961),
+        historyMarker('First spce '),
+        historyMarker('First space docking event', 1966),
         historyMarker('Moon landing', 1969),
         historyMarker('Fall of the Soviet Union', 1991),
-        historyMarker('Finacial crisis', 2008),
+        historyMarker('Financial crisis', 2008),
         historyMarker('Covid-19', 2019),
     ],
 };
