@@ -20,6 +20,7 @@ const option = {
         shading: 'lambert',
         globeRadius: 40,
         globeOuterRadius: 60,
+        projection: 'perspective',
         light: {
             main: {
                 intensity: 2
@@ -31,6 +32,7 @@ const option = {
         viewControl: {
             autoRotate: true,
             alpha: 10,
+            autoRotateAfterStill: 30
         },
     },
     visualMap: {
