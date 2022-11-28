@@ -35,7 +35,7 @@ const launches_modified = launches.map((launch) => {
 let years = new Set();
 
 launches_modified.forEach((launch) => years.add(launch.year));
-years = Array.from(years);
+years = Array.from(years).filter(year => year <= 2022);
 
 function calcTotalLaunches(data) {
     const launches_per_country = {};

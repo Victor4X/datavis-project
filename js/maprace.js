@@ -40,7 +40,7 @@ const launches_modified = launches.map((launch) => {
 let years = new Set();
 
 launches_modified.forEach((launch) => years.add(launch.year));
-years = Array.from(years);
+years = Array.from(years).filter(year => year <= 2022);
 
 function calcTotalLaunches(data) {
   const launches_per_country = {};
@@ -90,7 +90,7 @@ option = {
     min: 0,
     max: 3500,
     inRange: {
-      color: darkTheme.visualMap.color.reverse()
+      color: [...darkTheme.visualMap.color].reverse()
     },
     text: ['Launches'],
     calculable: true
@@ -120,6 +120,10 @@ option = {
       data: Object.keys(calcTotalLaunches(launches_modified)).map((name) =>
         name.substring(0, 3)
       ),
+      itemStyle: {
+        areaColor: "rgba(34,39,54,1)",
+        borderColor: "#ccc"
+      }
     }
   ],
   animationDuration: 500,
@@ -133,7 +137,7 @@ option = {
         right: 160,
         bottom: 60,
         style: {
-          text: years[0],
+          // text: years[0],
           font: "bolder 80px monospace",
           fill: "rgba(100, 100, 100, 0.25)",
         },
@@ -155,7 +159,7 @@ function updateYear(year) {
     }
   });
   // option.yAxis.data = Object.keys(launches).map(name => name.substring(0, 3)),
-  option.graphic.elements[0].style.text = year;
+  // option.graphic.elements[0].style.text = year;
   myChart.setOption(option);
 }
 
