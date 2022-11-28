@@ -167,12 +167,11 @@ option = {
         ...seriesList,
         historyMarker('Laika - Sputnik 2', 1957),
         historyMarker('Yuri Gagarin', 1961),
-        historyMarker('First spce '),
         historyMarker('First space docking event', 1966),
         historyMarker('Moon landing', 1969),
         historyMarker('Fall of the Soviet Union', 1991),
         historyMarker('Financial crisis', 2008),
-        historyMarker('Covid-19', 2019),
+        historyMarker('Falcon 9 landing', 2016),
     ],
 };
 
