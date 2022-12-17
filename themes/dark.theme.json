@@ -1,12 +1,13 @@
+
 {
     "color": [
-        "#f94144",
+        "#e52d5b",
         "#277da1",
-        "#f9c74f",
-        "#43aa8b",
+        "#f3ca40",
+        "#1bb754",
         "#277da1"
     ],
-    "backgroundColor": "rgba(34,39,54,1)",
+    "backgroundColor": "#1c202d",
     "textStyle": {},
     "title": {
         "textStyle": {
@@ -108,10 +109,10 @@
         "symbol": "emptyCircle",
         "smooth": false,
         "color": [
-            "#f94144",
+            "#e52d5b",
             "#277da1",
-            "#f9c74f",
-            "#43aa8b",
+            "#f3ca40",
+            "#1bb754",
             "#277da1"
         ],
         "label": {
@@ -331,7 +332,7 @@
             "width": 1
         },
         "itemStyle": {
-            "color": "#ffaf51",
+            "color": "#f3ca40",
             "borderWidth": 1
         },
         "controlStyle": {
@@ -348,7 +349,7 @@
         },
         "emphasis": {
             "itemStyle": {
-                "color": "#ffaf51"
+                "color": "#f3ca40"
             },
             "controlStyle": {
                 "color": "#ffaf51",
@@ -362,8 +363,8 @@
     },
     "visualMap": {
         "color": [
-            "#f94144",
-            "#493453"
+            "#1bb754",
+            "#1c202d"
         ]
     },
     "dataZoom": {

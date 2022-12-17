@@ -1,7 +1,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-    background-color: rgba(34, 39, 54, 1);
+    background-color: #1c202d;
     overflow-x: hidden;
 }
 
@@ -49,7 +49,7 @@ body {
 }
 
 .spacer {
-    background-color: rgba(34, 39, 54, 1);
+    background-color: #1c202d;
     color: #fff;
     font-size: 24px;
     font-weight: bold;

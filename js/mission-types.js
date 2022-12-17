@@ -95,7 +95,7 @@ const option = {
       top: '25%',
       right: '25%',
       height: '55%',
-      width: '50%'
+      width: '50%',
     },
     {
       bottom: '75.5%',
@@ -181,6 +181,7 @@ const option = {
       data: data,
       xAxisIndex: 0,
       yAxisIndex: 0,
+      z: -1,
       label: {
         show: true,
         formatter: (params) => {
@@ -211,7 +212,7 @@ const option = {
         }
       }),
       itemStyle: {
-        color: darkTheme.color[2]
+        color: darkTheme.color[0]
       },
     },
     {
@@ -233,7 +234,7 @@ const option = {
         }
       }),
       itemStyle: {
-        color: darkTheme.color[0]
+        color: darkTheme.color[1]
       }
     },
   ]

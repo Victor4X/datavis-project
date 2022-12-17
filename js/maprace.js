@@ -86,7 +86,6 @@ option = {
     showDelay: 0,
     transitionDuration: 0.2
   },
-  backgroundColor: "rgba(34,39,54,1)",
   visualMap: {
     left: 'right',
     min: 0,
