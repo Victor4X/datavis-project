@@ -86,7 +86,7 @@ function createScatter(center, radius) {
             show: false
         },
         animationDuration: 0,
-        symbolSize: (radius * 80 | 10) * window.innerWidth / window.innerHeight,
+        symbolSize: (radius * 80 | 10) * (window.innerWidth / window.innerHeight),
         data: [center],
     };
 }
