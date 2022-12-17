@@ -7,6 +7,8 @@ import { COLORS_ARRAY } from "./constants.js";
 
 echarts.registerTheme('dark-theme', darkTheme)
 
+console.log(launches.length)
+
 var chartDom = document.getElementById('maprace');
 var myChart = echarts.init(chartDom);
 var option;
@@ -116,6 +118,10 @@ option = {
         label: {
           show: true
         }
+      },
+      scaleLimit: {
+        min: 1,
+        max: 1
       },
       data: Object.keys(calcTotalLaunches(launches_modified)).map((name) =>
         name.substring(0, 3)
