@@ -34,7 +34,7 @@ for(let launch of launches) {
         concatPadLocations.push({
             latitude,
             longitude,
-            launches: 0,
+            launches: 1,
             missions: {
                 [launch.mission?.type]: 1
             }
