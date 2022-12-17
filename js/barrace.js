@@ -59,7 +59,6 @@ var option = {
     title: {
         text: "Launches pr country",
     },
-    backgroundColor: "rgba(34,39,54,1)",
     tooltip: {
         trigger: 'axis',
         axisPointer: {

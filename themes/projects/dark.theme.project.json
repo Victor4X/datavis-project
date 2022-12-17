@@ -3,24 +3,24 @@
     "themeName": "dark-theme",
     "theme": {
         "seriesCnt": "4",
-        "backgroundColor": "rgba(34,39,54,1)",
+        "backgroundColor": "#1c202d",
         "titleColor": "#ffaf51",
         "subtitleColor": "#eeeeee",
         "textColorShow": false,
         "textColor": "#333",
         "markTextColor": "#383838",
         "color": [
-            "#f94144",
+            "#e52d5b",
             "#277da1",
-            "#f9c74f",
-            "#43aa8b",
+            "#f3ca40",
+            "#1bb754",
             "#277da1"
         ],
         "borderColor": "#cccccc",
         "borderWidth": "0",
         "visualMapColor": [
-            "#f94144",
-            "#493453"
+            "#1bb754",
+            "#1c202d"
         ],
         "legendTextColor": "#999999",
         "kColor": "#ffee51",
@@ -147,8 +147,8 @@
         "tooltipAxisWidth": 1,
         "timelineLineColor": "#ffaf51",
         "timelineLineWidth": 1,
-        "timelineItemColor": "#ffaf51",
-        "timelineItemColorE": "#ffaf51",
+        "timelineItemColor": "#f3ca40",
+        "timelineItemColorE": "#f3ca40",
         "timelineCheckColor": "#ff715e",
         "timelineCheckBorderColor": "#ff715e",
         "timelineItemBorderWidth": 1,
