@@ -86,7 +86,7 @@ var myChart = echarts.init(chartDom);
 echarts.registerMap('world', worldJson);
 var option;
 
-const size = 40;
+const size = 10;
 
 option = {
     geo: {
@@ -119,7 +119,7 @@ option = {
             type: 'graph',
             layout: 'none',
             coordinateSystem: 'geo',
-            symbolSize: size * (window.innerWidth / window.innerHeight),
+            symbolSize: 0 * (window.innerWidth / window.innerHeight),
             label: {
                 show: false
             },
@@ -134,14 +134,14 @@ option = {
             data: sets[key].list.map(loc => {
                 return [loc.longitude, loc.latitude]
             }),
-            // links: sets[key].links,
+            links: sets[key].links,
             lineStyle: {
                 opacity: 1,
                 width: size * (window.innerWidth / window.innerHeight),
                 curveness: 0,
                 color: 'source',
                 cap: 'round',
-                type: 'dotted',
+                // type: 'dotted',
             }
         }
     })

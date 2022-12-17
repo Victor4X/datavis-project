@@ -19,6 +19,7 @@
     <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
     <script src="./js/pads-globe.js" type="module" defer></script>
     <script type="module" src="js/pad-locations.js" defer></script>
+    <script type="module" src="js/pad-mission-type-graph.js" defer></script>
 </head>
 
 <body>
@@ -73,6 +74,10 @@
         <div class="spacer" style="padding-top: 10em;"></div>
         <div class="spacer" style="padding-top: 5em;">Cumulative launches by locations</div>
         <div id="pad-locations-container" style="width: 100%;height:100vh;"></div>
+
+        <div class="spacer" style="padding-top: 10em;"></div>
+        <div class="spacer" style="padding-top: 5em;">Relation between launch pads and mission types</div>
+        <div id="pad-mission-container" style="width: 100%;height:100vh;"></div>
 
         <div class="spacer" style="padding-top: 10em;"></div>
         <div class="spacer" style="padding-top: 5em;">Cumulative launches by pads</div>
