@@ -56,3 +56,7 @@ body {
     text-align: center;
     height: 100px;
 }
+
+a {
+    color:rgba(118, 99, 138, 0.9);
+}
