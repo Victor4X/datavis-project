@@ -54,6 +54,7 @@ const option = {
             name: providerType,
             type: 'line',
             stack: 'Total',
+            symbol: 'circle',
             lineStyle: {
                 width: 0
             },
