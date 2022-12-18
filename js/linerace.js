@@ -84,6 +84,7 @@ function historyMarker(text, year) {
             animationDuration: 500,
             animationDelay: lineRaceTime / (years.length / position),
             lineStyle: {
+                color: 'lightgrey',
                 width: 2
             }
         }
