@@ -5,9 +5,9 @@ import launches from "../data/Launches.json" assert { type: "json" };
 function sortPoints(points) {
     points = points.splice(0);
     var p0 = {};
-    p0.y = Math.min.apply(null, points.map(p=>p[1]));
-    p0.x = Math.max.apply(null, points.filter(p=>p.y == p0.y).map(p=>p.x));
-    points.sort((a,b)=>angleCompare(p0, a, b));
+    p0.y = Math.min.apply(null, points.map(p => p[1]));
+    p0.x = Math.max.apply(null, points.filter(p => p.y == p0.y).map(p => p.x));
+    points.sort((a, b) => angleCompare(p0, a, b));
     return points;
 };
 
@@ -50,8 +50,6 @@ for (let launch of launches) {
     }
 }
 
-let maxTotalLaunchCount = Math.max(...locations.map(o => o.total_launch_count))
-
 
 for (let loc of concatPadLocations) {
     const maxMission = Object.keys(loc.missions)
@@ -85,15 +83,15 @@ Object.keys(sets).forEach(missionType => {
     sets[missionType].links = links;
 });
 
+const filteredSets = Object.keys(sets).filter(key => key != "undefined" && sets[key].list.length > 1);
 
 var chartDom = document.getElementById('pad-mission-container');
 var myChart = echarts.init(chartDom);
 echarts.registerMap('world', worldJson);
-var option;
 
 const size = 10;
 
-option = {
+const option = {
     geo: {
         map: 'world',
         roam: true,
@@ -118,83 +116,107 @@ option = {
     },
     animationDurationUpdate: 1500,
     animationEasingUpdate: 'quinticInOut',
-    series: Object.keys(sets).filter(key => key != "undefined" && sets[key].list.length > 1).map(key => {
+    series: [...filteredSets.map(key => {
         let data = sets[key].list.map(loc => {
             return [loc.longitude, loc.latitude]
         }).filter(d => !Number.isNaN(d[0]) || !Number.isNaN(d[0]))
-        
+
+        const getPoint = (func, index) => {
+            const value = data.find(d => d[index] == func(...data.map(d => d[index])));
+            data.splice(data.indexOf(value), 1)
+            return value
+        }
+
         data = [
-            data.find(d => d[1] == Math.max(...data.map(d => d[1]))),
-            data.find(d => d[0] == Math.min(...data.map(d => d[0]))),
-            data.find(d => d[1] == Math.min(...data.map(d => d[1]))),
-            data.find(d => d[0] == Math.max(...data.map(d => d[0]))),
+            getPoint(Math.max, 1),
+            getPoint(Math.min, 0),
+            getPoint(Math.min, 1),
+            getPoint(Math.max, 0),
         ];
-        console.log(data)
+
         return {
             name: key,
             type: 'custom',
             coordinateSystem: 'geo',
             renderItem: function (params, api) {
-              if (params.context.rendered) {
-                return;
-              }
-              params.context.rendered = true;
-              let points = [];
-              for (let i = 0; i < data.length; i++) {
-                points.push(api.coord(data[i]));
-              }
-              let color = api.visual('color');
-              return {
-                type: 'polygon',
-                transition: ['shape'],
-                shape: {
-                  points: points,
-                  smooth: 0.5
-                },
-                style: api.style({
-                  fill: color,
-                  opacity: 0.4,
-                }),
-                focus: 'series'
-              };
+                if (params.context.rendered) {
+                    return;
+                }
+                params.context.rendered = true;
+                let points = [];
+                for (let i = 0; i < data.length; i++) {
+                    points.push(api.coord(data[i]));
+                }
+                let color = api.visual('color');
+                return {
+                    type: 'polygon',
+                    transition: ['shape'],
+                    shape: {
+                        points: points,
+                        smooth: 0.5
+                    },
+                    style: api.style({
+                        fill: color,
+                        opacity: 0.4,
+                    }),
+                    focus: 'series'
+                };
             },
             clip: true,
             data: data
-          }
-        //     name: key,
-        //     type: 'graph',
-        //     layout: 'none',
-        //     coordinateSystem: 'geo',
-        //     symbolSize: 30 * (window.innerWidth / window.innerHeight),
-        //     label: {
-        //         show: false
-        //     },
-        //     emphasis: {
-        //         focus: 'series'
-        //     },
-        //     edgeSymbol: ['square', 'none'],
-        //     edgeSymbolSize: [4, 10],
-        //     edgeLabel: {
-        //         fontSize: 20
-        //     },
-        //     data: sets[key].list.map(loc => {
-        //         return [loc.longitude, loc.latitude]
-        //     }),
-        //     // links: sets[key].links,
-        //     lineStyle: {
-        //         opacity: 1,
-        //         width: size * (window.innerWidth / window.innerHeight),
-        //         curveness: 0,
-        //         color: 'source',
-        //         cap: 'round',
-        //         // type: 'dotted',
-        //     }
-        // }
+        }
+    }),
+    ...filteredSets.map(key => {
+        return {
+            name: key,
+            type: 'scatter',
+            layout: 'none',
+            coordinateSystem: 'geo',
+            symbolSize: 10 * (window.innerWidth / window.innerHeight),
+            label: {
+                show: false
+            },
+            emphasis: {
+                focus: 'self',
+                itemStyle: {
+                    opacity: 0.7
+                },
+            },
+            edgeSymbol: ['square', 'none'],
+            edgeSymbolSize: [4, 10],
+            edgeLabel: {
+                fontSize: 20
+            },
+            data: sets[key].list.map(loc => {
+                return [loc.longitude, loc.latitude]
+            }),
+            itemStyle: {
+                opacity: 0
+            }
+        }
     })
+    ]
 };
 
 if (option && typeof option === 'object') {
     myChart.setOption(option);
 }
+
+
+filteredSets.forEach(missionName => {
+    myChart.on('mouseover', { seriesName: missionName }, (event) => {
+        myChart.dispatchAction({
+            type: 'highlight',
+            seriesName: event.seriesName,
+        });
+    });
+
+    myChart.on('mouseout', { seriesName: missionName }, (event) => {
+        myChart.dispatchAction({
+            type: 'downplay',
+            seriesName: event.seriesName,
+        });
+    });
+})
 
 window.addEventListener('resize', myChart.resize);
