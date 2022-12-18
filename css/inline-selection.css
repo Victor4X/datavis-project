@@ -15,6 +15,7 @@
 }
 .inline-selections.open {
     display: block;
+    z-index: 9999999999;
 }
 .inline-dropdown {
     border-bottom: 1px dashed #aaa;

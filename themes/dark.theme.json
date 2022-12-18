@@ -5,9 +5,15 @@
         "#277da1",
         "#f3ca40",
         "#1bb754",
-        "#277da1"
+        "#cb71e2",
+        "#9ee735",
+        "#42e4cd",
+        "#ffa6a6",
+        "#9ea0ff",
+        "#df6500",
+        "#b60b94"
     ],
-    "backgroundColor": "#1c202d",
+    "backgroundColor": "rgba(28,32,45,1)",
     "textStyle": {},
     "title": {
         "textStyle": {
@@ -113,7 +119,13 @@
             "#277da1",
             "#f3ca40",
             "#1bb754",
-            "#277da1"
+            "#cb71e2",
+            "#9ee735",
+            "#42e4cd",
+            "#ffa6a6",
+            "#9ea0ff",
+            "#df6500",
+            "#b60b94"
         ],
         "label": {
             "color": "#383838"
