@@ -1,89 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rocket Launches</title>
-    <link rel="icon" type="image/x-icon" href="./assets/launch.ico">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/loader.css">
+    <link rel="icon" type="image/x-icon" href="./assets/launch.ico" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/loader.css" />
+    <link rel="stylesheet" href="css/inline-selection.css" />
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <script src="js/inline-selection.js" defer></script>
     <script type="module" src="js/common.js"></script>
     <script type="module" src="js/barrace.js"></script>
     <script type="module" src="js/maprace.js"></script>
     <script type="module" src="js/linerace.js"></script>
     <script type="module" src="js/stackedarea.js"></script>
     <script type="module" src="js/mission-types.js"></script>
-    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"
+    ></script>
     <script src="./js/pads-globe.js" type="module" defer></script>
     <script type="module" src="js/pad-locations.js" defer></script>
     <script type="module" src="js/pad-mission-type-graph.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="moon" id="loader">
-        <img src="https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/space-rocket-512.png"
-            style="width:30px;height:20px;" class="loader">
-        <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
+      <img
+        src="https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/space-rocket-512.png"
+        style="width: 30px; height: 20px"
+        class="loader"
+      />
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
     </div>
     <div id="content" style="opacity: 0">
-
-        <!--
-            
+      <div class="spacer" style="padding-top: 10em">
+        What is the biggest nations in space travel over time?
+      </div>
+      <div id="line-race-container" style="width: 100%; height: 600px"></div>
+      <div class="spacer" style="padding-top: 10em">
+        What are the most frequent objectives of space travel?
+      </div>
+      <div
+        id="mission-types-container"
+        style="min-height: 1080px; width: 100%; overflow: hidden"
+      ></div>
+      <div
+        id="mission-types-settings-spacer"
+        class="spacer"
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <div id="mission-types-settings-extra" style="width: 30%">
+          <span class="inline-sentence">
+            Normalize by
+            <span class="inline-dropdown">
+              <span class="inline-selected" id="mission-types-normalize-state">mission</span>
+              <ul class="inline-selections">
+                <li class="inline-selection">mission</li>
+                <li class="inline-selection">orbit</li>
+              </ul>
+            </span>
+            type
+          </span>
+        </div>
         <div
-        style="background-color: rgba(34,39,54,1);color: #fff; font-size: 24px; font-weight: bold; text-align: center; height: 100px;padding-top:10em">
-        Stacked Area Chart</div>
-        <div id="stacked-area" style="width: 100%; height:600px;"></div>
-    -->
-        <div class="spacer" style="padding-top:10em">What are the biggest nations in space travel over time?</div>
-        <div id="line-race-container" style="width: 100%;height:600px;"></div>
-        <div class="spacer" style="padding-top:10em">What are the most frequent objectives of space travel?</div>
-        <div id="mission-types-container" style="height: 100vh; width: 100%; overflow: hidden;"></div>
-        <!-- 
-    <div id="line-race-container" style="width: 100%;height:400px;"></div>>
--->
-        <div class="spacer" style="padding-top: 10em;">How has space travel market share evolved over time?</div>
-        <div id="stacked-area" style="width: 100%; height:600px;"></div>
+          id="mission-types-settings-container"
+          style="height: 100px; width: 30%"
+        ></div>
+      </div>
+      <div class="spacer" style="padding-top: 10em">
+        How has space travel market share evolved over time?
+      </div>
+      <div id="stacked-area" style="width: 100%; height: 600px"></div>
 
-        <div style="display:none">
-            <div id="settings"></div>
+      <div style="display: none">
+        <div id="settings"></div>
 
-            <input class="form-check-input" type="checkbox" value="" id="animationCheckbox" checked>
-            <label class="form-check-label" for="animationCheckbox">
-                Enable animations
-            </label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="animationCheckbox"
+          checked
+        />
+        <label class="form-check-label" for="animationCheckbox">
+          Enable animations
+        </label>
 
-            <input type="range" name="" id="year_slider">
-        </div>
-        <div class="spacer"></div>
-        <div class="spacer" style="padding-top: 5em;">Launches per year per country</div>
-        <div style="display: flex;">
-            <div id="barrace" style="width: 50%;height:400px;"></div>
-            <div id="maprace" style="width: 50%;height:400px;"></div>
-        </div>
-        <div class="spacer" style="padding-top: 10em;"></div>
-        <div class="spacer" style="padding-top: 5em;">Cumulative launches by locations</div>
-        <div id="pad-locations-container" style="width: 100%;height:100vh;"></div>
+        <input type="range" name="" id="year_slider" />
+      </div>
+      <div class="spacer"></div>
+      <div class="spacer" style="padding-top: 5em">
+        Launches per year per country
+      </div>
+      <div style="display: flex">
+        <div id="barrace" style="width: 50%; height: 400px"></div>
+        <div id="maprace" style="width: 50%; height: 400px"></div>
+      </div>
+      <div class="spacer" style="padding-top: 10em"></div>
+      <div class="spacer" style="padding-top: 5em">
+        Cumulative launches by locations
+      </div>
+      <div
+        id="pad-locations-container"
+        style="width: 100%; height: 100vh"
+      ></div>
 
-        <div class="spacer" style="padding-top: 10em;"></div>
-        <div class="spacer" style="padding-top: 5em;">Relation between launch pads and mission types</div>
-        <div id="pad-mission-container" style="width: 100%;height:100vh;"></div>
+      <div class="spacer" style="padding-top: 10em"></div>
+      <div class="spacer" style="padding-top: 5em">
+        Relation between launch pads and mission types
+      </div>
+      <div id="pad-mission-container" style="width: 100%; height: 100vh"></div>
 
-        <div class="spacer" style="padding-top: 10em;"></div>
-        <div class="spacer" style="padding-top: 5em;">Cumulative launches by pads</div>
-        <div id="pad-globe-container" style="height: 100vh"></div>
+      <div class="spacer" style="padding-top: 10em"></div>
+      <div class="spacer" style="padding-top: 5em">
+        Cumulative launches by pads
+      </div>
+      <div id="pad-globe-container" style="height: 100vh"></div>
 
-        <!--
+      <!--
     <div class="rocket-history">
         <h1>Rockets Throughout History</h1>
         <div class="country">
@@ -163,18 +208,19 @@
 -->
     </div>
     <script>
-        const loader = document.getElementById("loader");
-        const content = document.getElementById("content");
-        // Check if chrome https://bugzilla.mozilla.org/show_bug.cgi?id=1736059
-        if (window.chrome){
-            document.body.onload = () => {
-                loader.style.display = "none";
-                content.style.opacity = "1";
-            }
-        } else {
-            alert("This page only works in chrome. More info here:\nhttps://bugzilla.mozilla.org/show_bug.cgi?id=1736059");
-        }
+      const loader = document.getElementById("loader");
+      const content = document.getElementById("content");
+      // Check if chrome https://bugzilla.mozilla.org/show_bug.cgi?id=1736059
+      if (window.chrome) {
+        document.body.onload = () => {
+          loader.style.display = "none";
+          content.style.opacity = "1";
+        };
+      } else {
+        alert(
+          "This page only works in chrome. More info here:\nhttps://bugzilla.mozilla.org/show_bug.cgi?id=1736059"
+        );
+      }
     </script>
-</body>
-
+  </body>
 </html>

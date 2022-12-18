@@ -3,8 +3,14 @@ import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 
 echarts.registerTheme('dark-theme', darkTheme)
 
-const chartDom = document.getElementById('mission-types-container');
-const myChart = echarts.init(chartDom, 'dark-theme');
+const mainChartDom = document.getElementById('mission-types-container');
+const mainChart = echarts.init(mainChartDom, 'dark-theme');
+
+const settingsChartDom = document.getElementById('mission-types-settings-container');
+const settingsChart = echarts.init(settingsChartDom, 'dark-theme');
+
+// Connect the two charts
+echarts.connect([mainChart, settingsChart]);
 
 const orbits = new Set();
 
@@ -105,19 +111,25 @@ Object.keys(orbitTotals).forEach(orbit => {
 
 // Construct the data for the heatmap
 
-const data = [];
+const dataMissionNorm = [];
+const dataOrbitsNorm = [];
+
 
 const missionKeys = Object.keys(missions).sort((a, b) => missions[b].total - missions[a].total);
 const orbitKeys = Object.keys(orbitTotals).sort((a, b) => orbitTotals[b] - orbitTotals[a]);
 
 missionKeys.forEach((mission, missionIdx) => {
   orbitKeys.forEach((orbit, orbitIdx) => {
-    const amount = (missions[mission].orbits[orbit] / missions[mission].total).toFixed(2);
-    data.push([orbitIdx, missionIdx, amount]);
+    const amountMissionNorm = (missions[mission].orbits[orbit] / missions[mission].total).toFixed(2);
+    dataMissionNorm.push([orbitIdx, missionIdx, amountMissionNorm]);
+    const amountOrbitsNorm = (missions[mission].orbits[orbit] / orbitTotals[orbit]).toFixed(2);
+    dataOrbitsNorm.push([orbitIdx, missionIdx, amountOrbitsNorm]);
   });
 });
 
-const option = {
+var data = dataMissionNorm;
+
+const mainOption = {
   tooltip: {
     position: 'top',
     valueFormatter: (value) => value[2] ? Math.round(value[2] * 100) + "%" : value
@@ -181,6 +193,17 @@ const option = {
       show: false,
     },
   ],
+  tooltip: {
+    trigger: 'item',
+    axisPointer: {
+      type: 'cross',
+      crossStyle: {
+        width: 1,
+        opacity: 0.5
+      },
+    },
+    showContent: false,
+  },
   visualMap: {
     min: 0,
     max: 1,
@@ -193,18 +216,8 @@ const option = {
     textStyle: {
       color: '#fff'
     },
-    text: ['1.0', '0.0']
-  },
-  tooltip: {
-    trigger: 'item',
-    axisPointer: {
-      type: 'cross',
-      crossStyle: {
-        width: 1,
-        opacity: 0.5
-      },
-    },
-    showContent: false,
+    text: ['1.0', '0.0'],
+    show: false,
   },
   series: [
     {
@@ -272,6 +285,43 @@ const option = {
   ]
 };
 
-window.addEventListener("resize",myChart.resize);
+window.addEventListener("resize",mainChart.resize);
 
-myChart.setOption(option);
+mainChart.setOption(mainOption);
+
+// Create visual map for the heatmap in settings chart
+
+const settingsOption = {
+  visualMap: {
+    min: 0,
+    max: 1,
+    precision: 2,
+    calculable: true,
+    orient: 'horizontal',
+    left: '10%',
+    bottom: '30px',
+    seriesIndex: 0,
+    textStyle: {
+      color: '#fff'
+    },
+    text: ['1.0', '0.0']
+  },
+};
+
+settingsChart.setOption(settingsOption);
+
+// Grab inline selection normalization state element
+const normalizeState = document.getElementById("mission-types-normalize-state");
+
+// Add mutation observer to the normalize state element
+const observer = new MutationObserver((_) => {
+  data = normalizeState.textContent === "mission" ? dataMissionNorm : dataOrbitsNorm;
+  mainChart.setOption({
+    series: [{
+      data: data,
+    }]
+  });
+});
+
+// Observe the normalize state element
+observer.observe(normalizeState, { childList: true });
