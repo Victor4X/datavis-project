@@ -3,8 +3,14 @@ import darkTheme from '../themes/dark.theme.json' assert {type: 'json'};
 
 echarts.registerTheme('dark-theme', darkTheme)
 
-const chartDom = document.getElementById('mission-types-container');
-const myChart = echarts.init(chartDom, 'dark-theme');
+const mainChartDom = document.getElementById('mission-types-container');
+const mainChart = echarts.init(mainChartDom, 'dark-theme');
+
+const settingsChartDom = document.getElementById('mission-types-settings-container');
+const settingsChart = echarts.init(settingsChartDom, 'dark-theme');
+
+// Connect the two charts
+echarts.connect([mainChart, settingsChart]);
 
 const orbits = new Set();
 
@@ -123,7 +129,7 @@ missionKeys.forEach((mission, missionIdx) => {
 
 var data = dataMissionNorm;
 
-const option = {
+const mainOption = {
   tooltip: {
     position: 'top',
     valueFormatter: (value) => value[2] ? Math.round(value[2] * 100) + "%" : value
@@ -187,6 +193,17 @@ const option = {
       show: false,
     },
   ],
+  tooltip: {
+    trigger: 'item',
+    axisPointer: {
+      type: 'cross',
+      crossStyle: {
+        width: 1,
+        opacity: 0.5
+      },
+    },
+    showContent: false,
+  },
   visualMap: {
     min: 0,
     max: 1,
@@ -199,18 +216,8 @@ const option = {
     textStyle: {
       color: '#fff'
     },
-    text: ['1.0', '0.0']
-  },
-  tooltip: {
-    trigger: 'item',
-    axisPointer: {
-      type: 'cross',
-      crossStyle: {
-        width: 1,
-        opacity: 0.5
-      },
-    },
-    showContent: false,
+    text: ['1.0', '0.0'],
+    show: false,
   },
   series: [
     {
@@ -278,31 +285,43 @@ const option = {
   ]
 };
 
-window.addEventListener("resize",myChart.resize);
+window.addEventListener("resize",mainChart.resize);
 
-myChart.setOption(option);
+mainChart.setOption(mainOption);
 
-// Create checkbox for switching between the two normalizations
+// Create visual map for the heatmap in settings chart
 
-const checkbox = document.createElement("input");
-checkbox.type = "checkbox";
-checkbox.id = "mission-types-checkbox";
-checkbox.checked = true;
-checkbox.addEventListener("change", () => {
-  data = checkbox.checked ? dataMissionNorm : dataOrbitsNorm;
-  myChart.setOption({
+const settingsOption = {
+  visualMap: {
+    min: 0,
+    max: 1,
+    precision: 2,
+    calculable: true,
+    orient: 'horizontal',
+    left: '10%',
+    bottom: '30px',
+    seriesIndex: 0,
+    textStyle: {
+      color: '#fff'
+    },
+    text: ['1.0', '0.0']
+  },
+};
+
+settingsChart.setOption(settingsOption);
+
+// Grab inline selection normalization state element
+const normalizeState = document.getElementById("mission-types-normalize-state");
+
+// Add mutation observer to the normalize state element
+const observer = new MutationObserver((_) => {
+  data = normalizeState.textContent === "mission" ? dataMissionNorm : dataOrbitsNorm;
+  mainChart.setOption({
     series: [{
       data: data,
     }]
   });
 });
 
-const label = document.createElement("label");
-label.htmlFor = "mission-types-checkbox";
-label.appendChild(document.createTextNode("Normalize by mission type"));
-
-// Get "mission-types-settings-container"
-const settingsContainer = document.getElementById("mission-types-settings-container");
-
-settingsContainer.appendChild(checkbox);
-settingsContainer.appendChild(label);
+// Observe the normalize state element
+observer.observe(normalizeState, { childList: true });
