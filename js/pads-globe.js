@@ -6,7 +6,7 @@ pads.forEach(pad => {
     padsArray.push([parseFloat(pad.longitude), parseFloat(pad.latitude), pad.total_launch_count]);
 });
 
-console.log(padsArray)
+//console.log(padsArray)
 
 const dom = document.getElementById('pad-globe-container');
 const myChart = echarts.init(dom, 'dark-theme', {

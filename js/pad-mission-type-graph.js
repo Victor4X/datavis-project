@@ -5,9 +5,9 @@ import launches from "../data/Launches.json" assert { type: "json" };
 function sortPoints(points) {
     points = points.splice(0);
     var p0 = {};
-    p0.y = Math.min.apply(null, points.map(p=>p[1]));
-    p0.x = Math.max.apply(null, points.filter(p=>p.y == p0.y).map(p=>p.x));
-    points.sort((a,b)=>angleCompare(p0, a, b));
+    p0.y = Math.min.apply(null, points.map(p => p[1]));
+    p0.x = Math.max.apply(null, points.filter(p => p.y == p0.y).map(p => p.x));
+    points.sort((a, b) => angleCompare(p0, a, b));
     return points;
 };
 
@@ -86,7 +86,7 @@ Object.keys(sets).forEach(missionType => {
 });
 
 
-console.log(sets)
+//console.log(sets)
 
 var chartDom = document.getElementById('pad-mission-container');
 var myChart = echarts.init(chartDom);
@@ -124,45 +124,45 @@ option = {
         let data = sets[key].list.map(loc => {
             return [loc.longitude, loc.latitude]
         }).filter(d => !Number.isNaN(d[0]) || !Number.isNaN(d[0]))
-        
+
         data = [
             data.find(d => d[1] == Math.max(...data.map(d => d[1]))),
             data.find(d => d[0] == Math.min(...data.map(d => d[0]))),
             data.find(d => d[1] == Math.min(...data.map(d => d[1]))),
             data.find(d => d[0] == Math.max(...data.map(d => d[0]))),
         ];
-        console.log(data)
+        //console.log(data)
         return {
             name: key,
             type: 'custom',
             coordinateSystem: 'geo',
             renderItem: function (params, api) {
-              if (params.context.rendered) {
-                return;
-              }
-              params.context.rendered = true;
-              let points = [];
-              for (let i = 0; i < data.length; i++) {
-                points.push(api.coord(data[i]));
-              }
-              let color = api.visual('color');
-              return {
-                type: 'polygon',
-                transition: ['shape'],
-                shape: {
-                  points: points,
-                  smooth: 0.5
-                },
-                style: api.style({
-                  fill: color,
-                  opacity: 0.4,
-                }),
-                focus: 'series'
-              };
+                if (params.context.rendered) {
+                    return;
+                }
+                params.context.rendered = true;
+                let points = [];
+                for (let i = 0; i < data.length; i++) {
+                    points.push(api.coord(data[i]));
+                }
+                let color = api.visual('color');
+                return {
+                    type: 'polygon',
+                    transition: ['shape'],
+                    shape: {
+                        points: points,
+                        smooth: 0.5
+                    },
+                    style: api.style({
+                        fill: color,
+                        opacity: 0.4,
+                    }),
+                    focus: 'series'
+                };
             },
             clip: true,
             data: data
-          }
+        }
         //     name: key,
         //     type: 'graph',
         //     layout: 'none',

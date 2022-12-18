@@ -50,11 +50,19 @@ let option;
 
 let providers = [];
 
-// 
-// soviet: [2, 3, 4, 5, 6, 7, 8],
-// us: [1, 3, 4, 5, 6, 7, 8],
-// providername: [2, 3, 4, 5, 6, 7, 8],
 
+years.forEach(year => {
+    // get a list of all unique values in launch["launch_service_provider"]["type"]
+    const providers_this_year = launches[year].map(launch => launch["launch_service_provider"]["type"]);
+    // Add them to the set
+    providers_this_year.forEach(provider => {
+        if (!providers.includes(provider)) {
+            providers.push(provider)
+        }
+    });
+});
+
+console.log(providers_this_year);
 
 years.forEach(year => {
     // Get all launch_service_provider.name for this year
@@ -66,21 +74,6 @@ years.forEach(year => {
         }
     });
 });
-
-// console.log(providersObj);
-
-// Object.entries(providersObj).forEach((key, value) => {
-//     seriesList.push({
-//         name: key,
-//         type: 'line',
-//         stack: 'Total',
-//         areaStyle: {},
-//         emphasis: {
-//             focus: 'series'
-//         },
-//         data: [1957, 1958]
-//     })
-// });
 
 
 function historyMarker(text, year) {
@@ -167,7 +160,7 @@ echarts.util.each(providers, function (name) {
     });
 });
 
-console.log(providers);
+//console.log(providers);
 
 option = {
     // animationDuration: lineRaceTime,

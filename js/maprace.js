@@ -7,7 +7,7 @@ import { COLORS_ARRAY } from "./constants.js";
 
 echarts.registerTheme('dark-theme', darkTheme)
 
-console.log(launches.length)
+//console.log(launches.length)
 
 var chartDom = document.getElementById('maprace');
 var myChart = echarts.init(chartDom);
