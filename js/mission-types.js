@@ -105,17 +105,23 @@ Object.keys(orbitTotals).forEach(orbit => {
 
 // Construct the data for the heatmap
 
-const data = [];
+const dataMissionNorm = [];
+const dataOrbitsNorm = [];
+
 
 const missionKeys = Object.keys(missions).sort((a, b) => missions[b].total - missions[a].total);
 const orbitKeys = Object.keys(orbitTotals).sort((a, b) => orbitTotals[b] - orbitTotals[a]);
 
 missionKeys.forEach((mission, missionIdx) => {
   orbitKeys.forEach((orbit, orbitIdx) => {
-    const amount = (missions[mission].orbits[orbit] / missions[mission].total).toFixed(2);
-    data.push([orbitIdx, missionIdx, amount]);
+    const amountMissionNorm = (missions[mission].orbits[orbit] / missions[mission].total).toFixed(2);
+    dataMissionNorm.push([orbitIdx, missionIdx, amountMissionNorm]);
+    const amountOrbitsNorm = (missions[mission].orbits[orbit] / orbitTotals[orbit]).toFixed(2);
+    dataOrbitsNorm.push([orbitIdx, missionIdx, amountOrbitsNorm]);
   });
 });
+
+var data = dataMissionNorm;
 
 const option = {
   tooltip: {
@@ -275,3 +281,28 @@ const option = {
 window.addEventListener("resize",myChart.resize);
 
 myChart.setOption(option);
+
+// Create checkbox for switching between the two normalizations
+
+const checkbox = document.createElement("input");
+checkbox.type = "checkbox";
+checkbox.id = "mission-types-checkbox";
+checkbox.checked = true;
+checkbox.addEventListener("change", () => {
+  data = checkbox.checked ? dataMissionNorm : dataOrbitsNorm;
+  myChart.setOption({
+    series: [{
+      data: data,
+    }]
+  });
+});
+
+const label = document.createElement("label");
+label.htmlFor = "mission-types-checkbox";
+label.appendChild(document.createTextNode("Normalize by mission type"));
+
+// Get "mission-types-settings-container"
+const settingsContainer = document.getElementById("mission-types-settings-container");
+
+settingsContainer.appendChild(checkbox);
+settingsContainer.appendChild(label);
