@@ -67,7 +67,6 @@ const option = {
             endLabel: {
                 show: true,
                 formatter: function (params) {
-                    console.log(params)
                     return params.seriesName + ': ' + params.value;
                 }
             },
