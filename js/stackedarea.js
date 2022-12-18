@@ -39,12 +39,6 @@ const option = {
             saveAsImage: {}
         }
     },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
     xAxis: [
         {
             data: years
@@ -73,6 +67,7 @@ const option = {
             endLabel: {
                 show: true,
                 formatter: function (params) {
+                    console.log(params)
                     return params.seriesName + ': ' + params.value;
                 }
             },
