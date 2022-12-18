@@ -86,8 +86,6 @@ Object.keys(sets).forEach(missionType => {
 });
 
 
-console.log(sets)
-
 var chartDom = document.getElementById('pad-mission-container');
 var myChart = echarts.init(chartDom);
 echarts.registerMap('world', worldJson);

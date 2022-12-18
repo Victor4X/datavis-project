@@ -6,197 +6,229 @@ echarts.registerTheme('dark-theme', darkTheme)
 
 //const eur = ["AUT,BEL,CZE,DNK,FIN,FRA,DEU,GRC,IRE,ITA,LUZ,NLD,NOR,POL,PRT,ROU,ESP,SWE,CHE,GBR", "FRA", "GBR", "CZE", "DEU", "ITA"]
 
-function calcTotalLaunches(data) {
-    const launches_per_provider = {};
+// function calcTotalLaunches(data) {
+//     const launches_per_provider = {};
 
-    data.forEach((element) => {
-        let name = element["launch_service_provider"]["type"];
-        //country = eur.includes(country) ? 'EUR' : country;
+//     data.forEach((element) => {
+//         let name = element["launch_service_provider"]["type"];
+//         //country = eur.includes(country) ? 'EUR' : country;
 
-        launches_per_provider[name] = launches_per_provider[name]
-            ? launches_per_provider[name] + 1
-            : 1;
-    });
-    return launches_per_provider;
-}
+//         launches_per_provider[name] = launches_per_provider[name]
+//             ? launches_per_provider[name] + 1
+//             : 1;
+//     });
+//     return launches_per_provider;
+// }
 
+// const years = Object.keys(launches).sort().filter(year => year <= 2022);
+
+// // Setup dataset as 2d array
+// const headers = [
+//     "Launches",
+//     "Provider",
+//     "Year",
+// ];
+
+// const launches_array = [headers];
+// const seriesList = [];
+
+// years.forEach(year => {
+//     const total_launches = calcTotalLaunches(launches[year])
+
+//     Object.keys(total_launches).forEach(name => {
+//         launches_array.push([total_launches[name], name, year]);
+//     });
+// });
+
+
+// const chartDom = document.getElementById('stacked-area');
+// const myChart = echarts.init(chartDom, 'dark-theme');
+// let option;
+
+
+// let providers = [];
+
+// years.forEach(year => {
+//     // Get all launch_service_provider.name for this year
+//     const providers_this_year = launches[year].map(launch => launch["launch_service_provider"]["type"]);
+//     // Add them to the set
+//     providers_this_year.forEach(provider => {
+//         if (!providers.includes(provider)) {
+//             providers.push(provider)
+//         }
+//     });
+// });
+
+// const datasetWithFilters = [];
+
+// providers = providers.filter(provider => provider != "Multinational");
+
+
+// echarts.util.each(providers, function (name) {
+//     var datasetId = 'dataset_' + name;
+
+//     datasetWithFilters.push({
+//         id: datasetId,
+//         fromDatasetId: 'dataset_raw',
+//         transform: {
+//             type: 'filter',
+//             config: {
+//                 and: [
+//                     { dimension: 'Provider', '=': name },
+//                 ]
+//             }
+//         }
+//     });
+
+//     seriesList.push({
+//         type: 'line',
+//         lineStyle: {
+//             width: 0
+//         },
+//         stack: 'Total',
+//         areaStyle: {},
+//         datasetId: datasetId,
+//         showSymbol: false,
+//         name: name,
+//         endLabel: {
+//             show: true,
+//             formatter: function (params) {
+//                 return params.value[1] + ': ' + params.value[0];
+//             }
+//         },
+//         labelLayout: {
+//             moveOverlap: 'shiftY'
+//         },
+//         emphasis: {
+//             focus: 'series'
+//         },
+//         encode: {
+//             x: 'Year',
+//             y: 'Launches',
+//             label: ['Provider', 'Launches'],
+//             itemName: 'Year',
+//             tooltip: ['Launches']
+//         },
+//     });
+// });
+
+// console.log(providers);
+
+// option = {
+//     // animationDuration: lineRaceTime,
+//     dataset: [
+//         {
+//             id: 'dataset_raw',
+//             source: launches_array
+//         },
+//         ...datasetWithFilters
+//     ],
+//     tooltip: {
+//         order: 'valueDesc',
+//         trigger: 'axis'
+//     },
+//     xAxis: {
+//         name: 'Year',
+//         type: 'category',
+//     },
+//     yAxis: {
+//         name: 'Launches'
+//     },
+//     grid: {
+//         right: 140,
+//     },
+//     series: seriesList
+// };
+
+
+// myChart.setOption(option);
+
+// window.addEventListener("resize", myChart.resize);
 const years = Object.keys(launches).sort().filter(year => year <= 2022);
+const all_provider_types = {};
 
-// Setup dataset as 2d array
-const headers = [
-    "Launches",
-    "Provider",
-    "Year",
-];
+years
+    .forEach(year => launches[year]
+        .forEach(launch => {
+            if (!['Multinational', null].includes(launch.launch_service_provider.type)) {
+                all_provider_types[launch.launch_service_provider.type] = 0
+            }
+        })
+    )
 
-const launches_array = [headers];
-const seriesList = [];
+console.log(all_provider_types)
 
-years.forEach(year => {
-    const total_launches = calcTotalLaunches(launches[year])
-
-    Object.keys(total_launches).forEach(name => {
-        launches_array.push([total_launches[name], name, year]);
+const provider_types_pr_year = Object.keys(launches).map(year => {
+    const provider_types = { ...all_provider_types };
+    launches[year].forEach(launch => {
+        provider_types[launch.launch_service_provider.type] += 1;
     });
+
+    return provider_types
 });
 
+console.log(provider_types_pr_year)
 
-const lineRaceTime = 30000;
 
 const chartDom = document.getElementById('stacked-area');
 const myChart = echarts.init(chartDom, 'dark-theme');
 let option;
 
 
-let providers = [];
-
-// 
-// soviet: [2, 3, 4, 5, 6, 7, 8],
-// us: [1, 3, 4, 5, 6, 7, 8],
-// providername: [2, 3, 4, 5, 6, 7, 8],
-
-
-years.forEach(year => {
-    // Get all launch_service_provider.name for this year
-    const providers_this_year = launches[year].map(launch => launch["launch_service_provider"]["type"]);
-    // Add them to the set
-    providers_this_year.forEach(provider => {
-        if (!providers.includes(provider)) {
-            providers.push(provider)
-        }
-    });
-});
-
-// console.log(providersObj);
-
-// Object.entries(providersObj).forEach((key, value) => {
-//     seriesList.push({
-//         name: key,
-//         type: 'line',
-//         stack: 'Total',
-//         areaStyle: {},
-//         emphasis: {
-//             focus: 'series'
-//         },
-//         data: [1957, 1958]
-//     })
-// });
-
-
-function historyMarker(text, year) {
-    const position = year - years[0];
-    return {
-        type: 'line',
-        data: [],
-        showSymbol: false,
-        markLine: {
-            symbol: ['none', 'pin'],
-            symbolSize: 40,
-            emphasis: {
-                label: {
-                    position: 'top',
-                    formatter: () => text
-                },
-                lineStyle: {
-                    width: 2
-                }
-            },
-            label: {
-                formatter: () => ""
-            },
-            data: [{ xAxis: position }],
-            animationDuration: 500,
-            animationDelay: lineRaceTime / (years.length / position),
-            lineStyle: {
-                width: 2
-            }
-        }
-    }
-}
-
-const datasetWithFilters = [];
-
-providers = providers.filter(provider => provider != "Multinational");
-
-
-echarts.util.each(providers, function (name) {
-    var datasetId = 'dataset_' + name;
-
-    datasetWithFilters.push({
-        id: datasetId,
-        fromDatasetId: 'dataset_raw',
-        transform: {
-            type: 'filter',
-            config: {
-                and: [
-                    { dimension: 'Provider', '=': name },
-                ]
-            }
-        }
-    });
-
-    seriesList.push({
-        type: 'line',
-        lineStyle: {
-            width: 0
-        },
-        stack: 'Total',
-        areaStyle: {},
-        datasetId: datasetId,
-        showSymbol: false,
-        name: name,
-        endLabel: {
-            show: true,
-            formatter: function (params) {
-                return params.value[1] + ': ' + params.value[0];
-            }
-        },
-        labelLayout: {
-            moveOverlap: 'shiftY'
-        },
-        emphasis: {
-            focus: 'series'
-        },
-        encode: {
-            x: 'Year',
-            y: 'Launches',
-            label: ['Provider', 'Launches'],
-            itemName: 'Year',
-            tooltip: ['Launches']
-        },
-    });
-});
-
-console.log(providers);
-
 option = {
-    // animationDuration: lineRaceTime,
-    dataset: [
-        {
-            id: 'dataset_raw',
-            source: launches_array
-        },
-        ...datasetWithFilters
-    ],
     tooltip: {
         order: 'valueDesc',
         trigger: 'axis'
     },
-    xAxis: {
-        name: 'Year',
-        type: 'category',
+    legend: {
+        data: Object.keys(all_provider_types)
     },
-    yAxis: {
-        name: 'Launches'
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
     },
     grid: {
-        right: 140,
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
     },
-    series: seriesList
+    xAxis: [
+        {
+            data: years
+        }
+    ],
+    yAxis: [
+        {
+            name: 'Launches'
+        }
+    ],
+    series: Object.keys(all_provider_types).map(providerType => {
+        return {
+            name: providerType,
+            type: 'line',
+            stack: 'Total',
+            lineStyle: {
+                width: 0
+            },
+            areaStyle: {},
+            emphasis: {
+                focus: 'series'
+            },
+            labelLayout: {
+                moveOverlap: 'shiftY'
+            },
+            endLabel: {
+                show: true,
+                formatter: function (params) {
+                    return params.seriesName + ': ' + params.value;
+                }
+            },
+            showSymbol: false,
+            data: provider_types_pr_year.map(year => year[providerType])
+        }
+    })
 };
 
-
-myChart.setOption(option);
-
-window.addEventListener("resize", myChart.resize);
-
+option && myChart.setOption(option);
