@@ -15,7 +15,6 @@ const myChart = echarts.init(dom, 'dark-theme', {
 });
 
 const option = {
-    backgroundColor: "rgba(34,39,54,1)",
     globe: {
         baseTexture: '../assets/night.jpg',
         heightTexture: '../assets/world.topo.bathy.200401.jpg',
