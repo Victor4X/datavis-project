@@ -11,6 +11,9 @@ var mainOption;
 const dataActive = [];
 const dataInactive = [];
 
+const dataGovernment = [];
+const dataCommercial = [];
+
 const countries = {};
 
 launchers.forEach(launcher => {
@@ -26,11 +29,18 @@ launchers.forEach(launcher => {
 
     // If all the data is present, add it to the datasets
     if (entry.every(e => e !== null)) {
+        // Add the launcher to the active/inactive object
         if (launcher.active) {
             dataActive.push(entry);
-        }
-        if (!launcher.active) {
+        } else {
             dataInactive.push(entry);
+        }
+
+        // Add the launcher to the government/private object
+        if (launcher.manufacturer.type === "Government") {
+            dataGovernment.push(entry);
+        } else {
+            dataCommercial.push(entry);
         }
 
         // Get the country code
@@ -38,6 +48,13 @@ launchers.forEach(launcher => {
         // France is part of EUR in this visualization
         if (country === "FRA") {
             country = "EUR";
+        }
+        if (country === "UKR") {
+            country = "RUS";
+        }
+        // Group IND, IRN, GBR, KOR, BRA into other
+        if (["IND", "IRN", "GBR", "KOR", "BRA"].includes(country)) {
+            country = "OTHER";
         }
 
         // Add the launcher to the countries object
@@ -104,7 +121,8 @@ const futureLine = {
             show: false
         },
         z: -1,
-        silent: true
+        silent: true,
+        animation: false
     }
 }
 
@@ -122,14 +140,14 @@ const activityOption = {
         {
             name: 'Active',
             type: 'scatter',
-            itemStyle: {...itemStyle, color: darkTheme.color[1]},
+            itemStyle: { ...itemStyle, color: darkTheme.color[1] },
             data: dataActive,
             animation: false,
         },
         {
             name: 'Inactive',
             type: 'scatter',
-            itemStyle: {...itemStyle, color: darkTheme.color[0]},
+            itemStyle: { ...itemStyle, color: darkTheme.color[0] },
             data: dataInactive,
             animation: false,
         },
@@ -151,13 +169,41 @@ const countryOption = {
             return {
                 name: entry[0],
                 type: 'scatter',
-                itemStyle: {...itemStyle},
+                itemStyle: { ...itemStyle, color: darkTheme.color[sortedCountries.indexOf(entry)] },
                 data: entry[1].data,
                 animation: false
             }
         })
     ]
 
+};
+
+// Option that classifies the launchers by manufacturer type
+const typeOption = {
+    legend: {
+        top: '10%',
+        data: ['Government', 'Commercial'],
+        textStyle: {
+            fontSize: 16
+        }
+    },
+    series: [
+        futureLine,
+        {
+            name: 'Government',
+            type: 'scatter',
+            itemStyle: { ...itemStyle, color: darkTheme.color[1] },
+            data: dataGovernment,
+            animation: false,
+        },
+        {
+            name: 'Commercial',
+            type: 'scatter',
+            itemStyle: { ...itemStyle, color: darkTheme.color[0] },
+            data: dataCommercial,
+            animation: false,
+        },
+    ]
 };
 
 mainOption = {
@@ -256,8 +302,20 @@ const classificationState = document.getElementById("leo-capabilities-classifica
 
 // Add mutation observer to the normalize state element
 const observer = new MutationObserver((_) => {
-  mainOption = classificationState.textContent === "Active/Inactive" ? activityOption : countryOption;
-  myChart.setOption(mainOption);
+    var state = classificationState.textContent;
+    var tmpOption = {};
+    if (state === "Manufacturer Country") {
+        tmpOption = countryOption;
+    }
+    if (state === "Manufacturer Type") {
+        tmpOption = typeOption;
+    }
+    if (state === "Active/Inactive") {
+        tmpOption = activityOption;
+    }
+    // Reinitialize for some reason
+    myChart.setOption(mainOption, true);
+    myChart.setOption(tmpOption);
 });
 
 // Observe the normalize state element
