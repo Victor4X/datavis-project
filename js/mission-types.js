@@ -8,12 +8,14 @@ const myChart = echarts.init(chartDom, 'dark-theme');
 
 const orbits = new Set();
 
+// Get all the orbits into a set
 launches.forEach(launch => {
   if (launch.mission?.orbit?.name) {
     orbits.add(launch.mission.orbit.name)
   }
 })
 
+// Create an object with all the orbits as keys
 const orbitTotals = {};
 orbits.forEach(orbit => orbitTotals[orbit] = 0);
 
@@ -56,22 +58,52 @@ function calcMissionTypes(data) {
   return mission_types;
 }
 
-
 const missions = calcMissionTypes(launches);
 
-const orbitsArray = [];
+// Merge mission types and orbit types with less than or equal to 25 launches into other
 
-Object.keys(missions).sort().map(type => {
-  const tempOrbitArray = [];
-  Array.from(orbits).sort().forEach(orbit => {
-    if (missions[type].orbits[orbit]) {
-      tempOrbitArray.push(missions[type].orbits[orbit])
-    }
-  });
+// Mission types first
+const other = {
+  total: 0,
+  orbits: {}
+}
 
-  orbitsArray.push(tempOrbitArray);
-});
+Object.keys(missions).forEach(mission => {
+  if (missions[mission].total <= 25) {
+    other.total += missions[mission].total;
+    Object.keys(missions[mission].orbits).forEach(orbit => {
+      if (!other.orbits[orbit]) {
+        other.orbits[orbit] = 0;
+      }
+      other.orbits[orbit] += missions[mission].orbits[orbit];
+    })
+    delete missions[mission];
+  }
+})
 
+missions["Extraterrestrial and Other"] = other;
+
+// Orbit types next
+orbitTotals["Extraterrestrial and Other"] = 0;
+
+Object.keys(orbitTotals).forEach(orbit => {
+  if (orbitTotals[orbit] <= 25) {
+    orbitTotals["Extraterrestrial and Other"] += orbitTotals[orbit];
+    delete orbitTotals[orbit];
+
+    Object.keys(missions).forEach(type => {
+      if (missions[type].orbits[orbit]) {
+        if (!missions[type].orbits["Extraterrestrial and Other"]) {
+          missions[type].orbits["Extraterrestrial and Other"] = 0;
+        }
+        missions[type].orbits["Extraterrestrial and Other"] += missions[type].orbits[orbit];
+        delete missions[type].orbits[orbit];
+      }
+    })
+  }
+})
+
+// Construct the data for the heatmap
 
 const data = [];
 
